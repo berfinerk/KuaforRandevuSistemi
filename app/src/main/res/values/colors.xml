@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="white">#A0A0A0</color>
+    <color name="edittextColor">#FFFFFF</color>
+    <color name="buttonColor">#000000</color>
+    <color name="gray">#A0A0A0</color> <!-- Gri renk -->
+</resources>
