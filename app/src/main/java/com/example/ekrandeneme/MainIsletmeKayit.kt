@@ -39,7 +39,7 @@ class MainIsletmeKayit : AppCompatActivity() {
                 val userId = dbHelper.addUser(email, password, name, "BUSINESS")
                 if (userId > 0) {
                     // Sonra salonu ekle
-                    val salonId = dbHelper.addSalon(name, address, phone, salonType)
+                    val salonId = dbHelper.addSalon(name, address, phone, salonType, userId)
                     if (salonId > 0) {
                         Toast.makeText(this, "Kayıt başarılı! Giriş yapabilirsiniz.", Toast.LENGTH_SHORT).show()
                         finish()
