@@ -22,150 +22,58 @@
       tools:ignore="MissingConstraints" />
 
   <EditText
-      android:id="@+id/KayitKullaniciAdSoyad"
-      android:layout_width="360dp"
-      android:layout_height="48dp"
-      android:layout_marginBottom="30dp"
-      android:background="@drawable/kayit_ol_edittext"
-      android:ems="10"
-      android:hint="Ad Soyad"
-      android:inputType="text"
-      android:padding="10dp"
-      android:textSize="22sp"
-      app:layout_constraintBottom_toTopOf="@+id/KayitKullaniciTelEposta"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.515"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/KayittextView"
-      app:layout_constraintVertical_bias="0.651" />
-
-  <EditText
-      android:id="@+id/KayitKullaniciKullaniciAdi"
-      android:layout_width="362dp"
-      android:layout_height="48dp"
-      android:layout_marginBottom="30dp"
-      android:background="@drawable/kayit_ol_edittext"
-      android:ems="10"
-      android:hint=" Kullanıcı Adı"
-      android:inputType="text"
-      android:padding="10dp"
-      android:textSize="22sp"
-      app:layout_constraintBottom_toTopOf="@+id/KayitKullaniciParola"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent" />
-
-  <EditText
-      android:id="@+id/KayitKullaniciAdres"
-      android:layout_width="358dp"
-      android:layout_height="48dp"
-      android:layout_marginBottom="30dp"
-      android:background="@drawable/kayit_ol_edittext"
-      android:ems="10"
-      android:hint=" Adres ( İsteğe Bağlı )"
-      android:inputType="text"
-      android:padding="10dp"
-      android:textSize="22sp"
-      app:layout_constraintBottom_toTopOf="@+id/KayitKullaniciKullaniciAdi"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent" />
-
-
-  <EditText
-      android:id="@+id/KayitKullaniciParola"
-      android:layout_width="358dp"
-      android:layout_height="48dp"
-      android:layout_marginBottom="30dp"
-      android:background="@drawable/kayit_ol_edittext"
-      android:ems="10"
-      android:hint=" Parola"
-      android:inputType="text"
-      android:padding="10dp"
-      android:textSize="22sp"
-      app:layout_constraintBottom_toTopOf="@+id/KayitKullaniciParolaTekrar"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent" />
-
-  <EditText
-      android:id="@+id/KayitKullaniciParolaTekrar"
-      android:layout_width="359dp"
-      android:layout_height="48dp"
-      android:layout_marginBottom="76dp"
-      android:background="@drawable/kayit_ol_edittext"
-      android:ems="10"
-      android:hint=" Parola Tekrarı"
-      android:inputType="text"
-      android:padding="10dp"
-      android:textSize="22sp"
-      app:layout_constraintBottom_toTopOf="@+id/btnKayitKullaniciKayitOl"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.411"
-      app:layout_constraintStart_toStartOf="parent"
-      tools:ignore="MissingConstraints" />
-
-  <EditText
-      android:id="@+id/KayitKullaniciTelEposta"
-      android:layout_width="359dp"
-      android:layout_height="48dp"
-      android:layout_marginBottom="64dp"
-      android:background="@drawable/kayit_ol_edittext"
-      android:ems="10"
-      android:hint=" Telefon Numarası veya E-posta"
-      android:inputType="text"
-      android:padding="10dp"
-      android:textSize="22sp"
-      app:layout_constraintBottom_toTopOf="@+id/KayitKullaniciAdres"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.558"
-      app:layout_constraintStart_toStartOf="parent" />
-
-  <RadioGroup
-      android:id="@+id/radioGroupGender"
-      android:layout_width="wrap_content"
+      android:id="@+id/editTextName"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:orientation="horizontal"
-      tools:ignore="MissingConstraints">
-
-
-  </RadioGroup>
-
-  <RadioButton
-      android:id="@+id/KayitKullaniciErkek"
-      android:layout_width="169dp"
-      android:layout_height="48dp"
-      android:layout_marginBottom="20dp"
-      android:text="Erkek"
-      android:textSize="22sp"
-      android:textStyle="italic"
-      app:layout_constraintBottom_toTopOf="@+id/btnKayitKullaniciKayitOl"
-      app:layout_constraintEnd_toStartOf="@+id/KayitKullaniciKadin"
-      app:layout_constraintHorizontal_bias="0.485"
-      app:layout_constraintStart_toStartOf="parent"
-      tools:ignore="MissingConstraints" />
-
-  <RadioButton
-      android:id="@+id/KayitKullaniciKadin"
-      android:layout_width="185dp"
-      android:layout_height="48dp"
-      android:layout_marginEnd="4dp"
-      android:layout_marginBottom="20dp"
-      android:text="Kadın"
-      android:textSize="22sp"
-      android:textStyle="italic"
-      app:layout_constraintBottom_toTopOf="@+id/btnKayitKullaniciKayitOl"
+      android:layout_marginStart="32dp"
+      android:layout_marginTop="150dp"
+      android:layout_marginEnd="32dp"
+      android:background="@drawable/edittextarkaplan"
+      android:hint="Ad Soyad"
+      android:inputType="textPersonName"
+      android:padding="15dp"
       app:layout_constraintEnd_toEndOf="parent"
-      tools:ignore="MissingConstraints" />
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+  <EditText
+      android:id="@+id/editTextEmail"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:background="@drawable/edittextarkaplan"
+      android:hint="E-posta"
+      android:inputType="textEmailAddress"
+      android:padding="15dp"
+      app:layout_constraintEnd_toEndOf="@+id/editTextName"
+      app:layout_constraintStart_toStartOf="@+id/editTextName"
+      app:layout_constraintTop_toBottomOf="@+id/editTextName" />
+
+  <EditText
+      android:id="@+id/editTextPassword"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:background="@drawable/edittextarkaplan"
+      android:hint="Şifre"
+      android:inputType="textPassword"
+      android:padding="15dp"
+      app:layout_constraintEnd_toEndOf="@+id/editTextEmail"
+      app:layout_constraintStart_toStartOf="@+id/editTextEmail"
+      app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
 
   <Button
-      android:id="@+id/btnKayitKullaniciKayitOl"
-      android:layout_width="192dp"
-      android:layout_height="58dp"
-      android:layout_marginBottom="88dp"
+      android:id="@+id/btnKayitOl"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="32dp"
       android:background="@drawable/buttonarkaplan"
       android:text="KAYIT OL"
-      android:textSize="22sp"
-      app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent" />
+      android:textColor="@color/white"
+      android:textSize="18sp"
+      app:layout_constraintEnd_toEndOf="@+id/editTextPassword"
+      app:layout_constraintStart_toStartOf="@+id/editTextPassword"
+      app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
 
   <TextView
       android:id="@+id/KayittextView"
@@ -180,6 +88,5 @@
       app:layout_constraintHorizontal_bias="0.675"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

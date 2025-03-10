@@ -5,26 +5,25 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ekrandeneme.database.DatabaseHelper
-import com.example.ekrandeneme.databinding.ActivityMainBinding
+import com.example.ekrandeneme.databinding.ActivityMainIsletmeGirisBinding
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+class MainIsletmeGiris : AppCompatActivity() {
+    private lateinit var binding: ActivityMainIsletmeGirisBinding
     private lateinit var dbHelper: DatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainIsletmeGirisBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // Veritabanı yardımcısını başlat
         dbHelper = DatabaseHelper(this)
         dbHelper.openDatabase()
 
-        // Test için örnek veri ekle
+        // Test için örnek işletme verisi ekle
         try {
-            dbHelper.addUser("test@test.com", "123456", "Test Kullanıcı", "CUSTOMER")
-            dbHelper.addSalon("Güzel Saçlar Kuaför", "Atatürk Cad. No:123", "05551234567", "KUAFOR")
-            dbHelper.addSalon("Beauty Center", "İnönü Cad. No:456", "05557654321", "GUZELLIK_MERKEZI")
+            dbHelper.addUser("isletme@test.com", "123456", "Test İşletme", "BUSINESS")
+            dbHelper.addSalon("Test Kuaför", "Test Mahallesi No:1", "05551234567", "KUAFOR")
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -41,9 +40,15 @@ class MainActivity : AppCompatActivity() {
 
             try {
                 if (dbHelper.checkUser(email, password)) {
-                    Toast.makeText(this, "Giriş başarılı!", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, MainKullaniciEkrani::class.java))
-                    finish()
+                    // Kullanıcı tipini kontrol et
+                    val userType = dbHelper.getUserType(email)
+                    if (userType == "BUSINESS") {
+                        Toast.makeText(this, "Giriş başarılı!", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this, MainIsletmeEkrani::class.java))
+                        finish()
+                    } else {
+                        Toast.makeText(this, "Bu hesap bir işletme hesabı değil", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
                     Toast.makeText(this, "Geçersiz e-posta veya şifre", Toast.LENGTH_SHORT).show()
                 }
@@ -55,17 +60,12 @@ class MainActivity : AppCompatActivity() {
 
         // Kayıt ol butonu tıklama olayı
         binding.btnKayitOl.setOnClickListener {
-            startActivity(Intent(this, MainKayitOl::class.java))
+            startActivity(Intent(this, MainIsletmeKayit::class.java))
         }
 
         // Şifremi unuttum butonu tıklama olayı
         binding.btnSifremiUnuttum.setOnClickListener {
             startActivity(Intent(this, MainSifremiUnuttum::class.java))
-        }
-
-        // İşletme girişi butonu tıklama olayı
-        binding.btnIsletmeGirisi.setOnClickListener {
-            startActivity(Intent(this, MainIsletmeGiris::class.java))
         }
     }
 
@@ -73,4 +73,4 @@ class MainActivity : AppCompatActivity() {
         dbHelper.close()
         super.onDestroy()
     }
-}
+} 

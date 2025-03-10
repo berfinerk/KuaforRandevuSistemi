@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.EkranDeneme"
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
         tools:targetApi="31">
         <activity
             android:name=".MainParolaYenileme"
@@ -28,11 +28,22 @@
             android:name=".MainKayitOl"
             android:exported="false" />
         <activity
+            android:name=".MainSifremiUnuttum"
+            android:exported="false" />
+        <activity
+            android:name=".MainIsletmeGiris"
+            android:exported="false" />
+        <activity
+            android:name=".MainIsletmeKayit"
+            android:exported="false" />
+        <activity
+            android:name=".MainIsletmeEkrani"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

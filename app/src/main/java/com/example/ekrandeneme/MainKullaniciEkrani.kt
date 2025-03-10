@@ -11,12 +11,12 @@ import com.example.ekrandeneme.databinding.ActivityMainKayitOlBinding
 import com.example.ekrandeneme.databinding.ActivityMainKullaniciEkraniBinding
 
 class MainKullaniciEkrani : AppCompatActivity() {
-   private lateinit var binding: ActivityMainKullaniciEkraniBinding
+    private lateinit var binding: ActivityMainKullaniciEkraniBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding =ActivityMainKullaniciEkraniBinding.inflate(layoutInflater)
-        val kullanıcısayfası = binding.root
-        setContentView(kullanıcısayfası)
+        binding = ActivityMainKullaniciEkraniBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         enableEdgeToEdge()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -33,8 +33,5 @@ class MainKullaniciEkrani : AppCompatActivity() {
             intent= Intent(this,MainGuzellikMerkeziListesi::class.java)
             startActivity(intent)
         }
-
-
-
     }
 }
