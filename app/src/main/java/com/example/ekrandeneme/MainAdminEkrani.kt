@@ -1,20 +1,29 @@
 package com.example.ekrandeneme
 
+<<<<<<< HEAD
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ekrandeneme.database.DatabaseHelper
+=======
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+>>>>>>> 66b73c9375607998507e14140f90c42c8bd3d6bd
 import com.example.ekrandeneme.databinding.ActivityMainAdminEkraniBinding
 
 class MainAdminEkrani : AppCompatActivity() {
     private lateinit var binding: ActivityMainAdminEkraniBinding
+<<<<<<< HEAD
     private lateinit var dbHelper: DatabaseHelper
+=======
+>>>>>>> 66b73c9375607998507e14140f90c42c8bd3d6bd
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainAdminEkraniBinding.inflate(layoutInflater)
         setContentView(binding.root)
+<<<<<<< HEAD
 
         // Veritabanı yardımcısını başlat
         dbHelper = DatabaseHelper(this)
@@ -91,5 +100,7 @@ class MainAdminEkrani : AppCompatActivity() {
     override fun onDestroy() {
         dbHelper.close()
         super.onDestroy()
+=======
+>>>>>>> 66b73c9375607998507e14140f90c42c8bd3d6bd
     }
 } 

@@ -20,6 +20,26 @@ class MainActivity : AppCompatActivity() {
         dbHelper = DatabaseHelper(this)
         dbHelper.openDatabase()
 
+<<<<<<< HEAD
+=======
+        // Test için örnek veri ekle
+        try {
+            // Test müşteri kullanıcısı
+            val customerId = dbHelper.addUser("test@test.com", "123456", "Test Kullanıcı", "CUSTOMER")
+            
+            // Test işletme kullanıcısı
+            val businessId = dbHelper.addUser("isletme@test.com", "123456", "Test İşletme", "BUSINESS")
+            
+            // Test salonları
+            if (businessId > 0) {
+                dbHelper.addSalon("Güzel Saçlar Kuaför", "Atatürk Cad. No:123", "05551234567", "KUAFOR", businessId)
+                dbHelper.addSalon("Beauty Center", "İnönü Cad. No:456", "05557654321", "GUZELLIK_MERKEZI", businessId)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+>>>>>>> 66b73c9375607998507e14140f90c42c8bd3d6bd
         // Giriş yap butonu tıklama olayı
         binding.btnGirisYap.setOnClickListener {
             val email = binding.editTextEmail.text.toString().trim()
@@ -30,6 +50,7 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+<<<<<<< HEAD
             // Kullanıcı adı ve şifre kontrolü
             if (dbHelper.checkUser(email, password)) {
                 val userType = dbHelper.getUserType(email)
@@ -39,6 +60,22 @@ class MainActivity : AppCompatActivity() {
                 sharedPreferences.edit().apply {
                     putString("email", email)
                     apply()
+=======
+            try {
+                if (dbHelper.checkUser(email, password)) {
+                    val userType = dbHelper.getUserType(email)
+                    Toast.makeText(this, "Giriş başarılı!", Toast.LENGTH_SHORT).show()
+                    
+                    // Kullanıcı tipine göre yönlendirme
+                    when (userType) {
+                        "CUSTOMER" -> startActivity(Intent(this, MainKullaniciEkrani::class.java))
+                        "BUSINESS" -> startActivity(Intent(this, MainIsletmeEkrani::class.java))
+                        "ADMIN" -> startActivity(Intent(this, MainAdminEkrani::class.java))
+                    }
+                    finish()
+                } else {
+                    Toast.makeText(this, "Geçersiz e-posta veya şifre", Toast.LENGTH_SHORT).show()
+>>>>>>> 66b73c9375607998507e14140f90c42c8bd3d6bd
                 }
                 
                 Toast.makeText(this, "Giriş başarılı!", Toast.LENGTH_SHORT).show()
