@@ -22,8 +22,12 @@ class MainIsletmeGiris : AppCompatActivity() {
 
         // Test için örnek işletme verisi ekle
         try {
-            dbHelper.addUser("isletme@test.com", "123456", "Test İşletme", "BUSINESS")
-            dbHelper.addSalon("Test Kuaför", "Test Mahallesi No:1", "05551234567", "KUAFOR")
+            // Önce kullanıcıyı ekle
+            val userId = dbHelper.addUser("isletme@test.com", "123456", "Test İşletme", "BUSINESS")
+            if (userId > 0) {
+                // Sonra salonu ekle
+                dbHelper.addSalon("Test Kuaför", "Test Mahallesi No:1", "05551234567", "KUAFOR", userId)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -43,6 +47,13 @@ class MainIsletmeGiris : AppCompatActivity() {
                     // Kullanıcı tipini kontrol et
                     val userType = dbHelper.getUserType(email)
                     if (userType == "BUSINESS") {
+                        // E-posta adresini SharedPreferences'a kaydet
+                        val sharedPreferences = getSharedPreferences("login_prefs", MODE_PRIVATE)
+                        sharedPreferences.edit().apply {
+                            putString("email", email)
+                            apply()
+                        }
+                        
                         Toast.makeText(this, "Giriş başarılı!", Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this, MainIsletmeEkrani::class.java))
                         finish()

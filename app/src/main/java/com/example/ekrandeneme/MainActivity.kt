@@ -20,36 +20,42 @@ class MainActivity : AppCompatActivity() {
         dbHelper = DatabaseHelper(this)
         dbHelper.openDatabase()
 
-        // Test için örnek veri ekle
-        try {
-            dbHelper.addUser("test@test.com", "123456", "Test Kullanıcı", "CUSTOMER")
-            dbHelper.addSalon("Güzel Saçlar Kuaför", "Atatürk Cad. No:123", "05551234567", "KUAFOR")
-            dbHelper.addSalon("Beauty Center", "İnönü Cad. No:456", "05557654321", "GUZELLIK_MERKEZI")
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
         // Giriş yap butonu tıklama olayı
         binding.btnGirisYap.setOnClickListener {
-            val email = binding.editTextEmail.text.toString()
-            val password = binding.editTextPassword.text.toString()
+            val email = binding.editTextEmail.text.toString().trim()
+            val password = binding.editTextPassword.text.toString().trim()
 
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Lütfen e-posta ve şifrenizi girin", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            try {
-                if (dbHelper.checkUser(email, password)) {
-                    Toast.makeText(this, "Giriş başarılı!", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, MainKullaniciEkrani::class.java))
-                    finish()
-                } else {
-                    Toast.makeText(this, "Geçersiz e-posta veya şifre", Toast.LENGTH_SHORT).show()
+            // Kullanıcı adı ve şifre kontrolü
+            if (dbHelper.checkUser(email, password)) {
+                val userType = dbHelper.getUserType(email)
+                
+                // E-posta adresini SharedPreferences'a kaydet
+                val sharedPreferences = getSharedPreferences("login_prefs", MODE_PRIVATE)
+                sharedPreferences.edit().apply {
+                    putString("email", email)
+                    apply()
                 }
-            } catch (e: Exception) {
-                Toast.makeText(this, "Giriş sırasında bir hata oluştu: ${e.message}", Toast.LENGTH_LONG).show()
-                e.printStackTrace()
+                
+                Toast.makeText(this, "Giriş başarılı!", Toast.LENGTH_SHORT).show()
+                
+                // Kullanıcı tipine göre yönlendirme
+                when (userType) {
+                    "CUSTOMER" -> startActivity(Intent(this, MainKullaniciEkrani::class.java))
+                    "BUSINESS" -> startActivity(Intent(this, MainIsletmeEkrani::class.java))
+                    "ADMIN" -> startActivity(Intent(this, MainAdminEkrani::class.java))
+                    else -> {
+                        Toast.makeText(this, "Kullanıcı tipi tanımlanamadı", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
+                }
+                finish()
+            } else {
+                Toast.makeText(this, "Geçersiz şifre", Toast.LENGTH_SHORT).show()
             }
         }
 
