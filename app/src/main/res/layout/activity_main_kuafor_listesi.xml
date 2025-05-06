@@ -9,13 +9,8 @@
         android:id="@+id/textViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-<<<<<<< HEAD
         android:layout_marginTop="16dp"
         android:text="Kuaförler"
-=======
-        android:layout_marginTop="32dp"
-        android:text="Kuaför Salonları"
->>>>>>> 66b73c9375607998507e14140f90c42c8bd3d6bd
         android:textColor="@android:color/black"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -23,7 +18,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-<<<<<<< HEAD
     <SearchView
         android:id="@+id/searchView"
         android:layout_width="0dp"
@@ -92,23 +86,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chipScrollView" />
-=======
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitle">
-
-        <LinearLayout
-            android:id="@+id/salonListContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp" />
-
-    </ScrollView>
->>>>>>> 66b73c9375607998507e14140f90c42c8bd3d6bd
 
 </androidx.constraintlayout.widget.ConstraintLayout>

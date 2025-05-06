@@ -43,7 +43,6 @@
             android:name=".MainAdminEkrani"
             android:exported="false" />
         <activity
-<<<<<<< HEAD
             android:name=".MainGuzellikMerkeziDetay"
             android:exported="false" />
         <activity
@@ -53,8 +52,6 @@
             android:name=".MainKuaforDetay"
             android:exported="false" />
         <activity
-=======
->>>>>>> 66b73c9375607998507e14140f90c42c8bd3d6bd
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
