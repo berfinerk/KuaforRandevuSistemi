@@ -2,9 +2,12 @@ package com.example.ekrandeneme
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.example.ekrandeneme.databinding.ActivityMainBinding
+import com.example.ekrandeneme.databinding.ActivityMainKayitOlBinding
 import com.example.ekrandeneme.databinding.ActivityMainKullaniciEkraniBinding
 
 class MainKullaniciEkrani : AppCompatActivity() {
@@ -15,42 +18,20 @@ class MainKullaniciEkrani : AppCompatActivity() {
         binding = ActivityMainKullaniciEkraniBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Kuaför butonu tıklama olayı
-        binding.kuaforBtn.setOnClickListener {
-            try {
-                Log.d("MainKullaniciEkrani", "Kuaför listesi açılıyor")
-                val intent = Intent(this@MainKullaniciEkrani, MainKuaforListesi::class.java)
-                startActivity(intent)
-            } catch (e: Exception) {
-                Log.e("MainKullaniciEkrani", "Kuaför listesi açılırken hata: ${e.message}")
-                e.printStackTrace()
-                Toast.makeText(this, "Kuaför listesi açılırken bir hata oluştu", Toast.LENGTH_LONG).show()
-            }
+        enableEdgeToEdge()
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
         }
 
-        // Güzellik Merkezi butonu tıklama olayı
-        binding.guzellikBtn.setOnClickListener {
-            try {
-                Log.d("MainKullaniciEkrani", "Güzellik merkezi listesi açılıyor")
-                val intent = Intent(this@MainKullaniciEkrani, MainGuzellikMerkeziListesi::class.java)
-                startActivity(intent)
-            } catch (e: Exception) {
-                Log.e("MainKullaniciEkrani", "Güzellik merkezi listesi açılırken hata: ${e.message}")
-                e.printStackTrace()
-                Toast.makeText(this, "Güzellik merkezi listesi açılırken bir hata oluştu", Toast.LENGTH_LONG).show()
-            }
+        binding.kuaforBtn.setOnClickListener{
+            intent= Intent(this,MainKuaforListesi::class.java)
+            startActivity(intent)
         }
-
-        // Arama görünümü için listener
-        binding.searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                Toast.makeText(this@MainKullaniciEkrani, "Arama özelliği yakında eklenecek!", Toast.LENGTH_SHORT).show()
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return true
-            }
-        })
+        binding.guzellikBtn.setOnClickListener{
+            intent= Intent(this,MainGuzellikMerkeziListesi::class.java)
+            startActivity(intent)
+        }
     }
 }
