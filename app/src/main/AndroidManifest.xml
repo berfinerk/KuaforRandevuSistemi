@@ -47,6 +47,36 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
+=======
+        <activity
+            android:name=".SacTasarimMerkeziActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProKuaforActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GuzelSaclarKuaforActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ModernKesimActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ElitKuaforActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GuzellikMerkezi1Activity"
+            android:exported="false" />
+        <activity
+            android:name=".GuzellikMerkezi2Activity"
+            android:exported="false" />
+        <activity
+            android:name=".GuzellikMerkezi3Activity"
+            android:exported="false" />
+        <activity
+            android:name=".RandevuAlActivity"
+            android:exported="false" />
+>>>>>>> 4690fb7 (salonlar listelendi)
     </application>
 
 </manifest>
