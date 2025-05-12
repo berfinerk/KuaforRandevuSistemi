@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    android:backgroundTint="#FFFFFF"
+    tools:context=".MainKullaniciEkrani">
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/arkapln"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="-16dp" />
+
+    <Button
+        android:id="@+id/kuafor_btn"
+        android:layout_width="278dp"
+        android:layout_height="267dp"
+        android:layout_marginTop="164dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/sgrpieyazi"
+        android:text="KUAFÖR"
+        android:textColor="#5B8873"
+        android:textSize="53sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guzellik_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.565"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView3"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/guzellik_btn"
+        android:layout_width="284dp"
+        android:layout_height="278dp"
+        android:layout_marginBottom="84dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/sgrpieyazi"
+        android:text="GÜZELLİK MERKEZİ"
+        android:textColor="#5B8873"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.541"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <android.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="288dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="84dp"
+        android:background="@drawable/search_background"
+        android:iconifiedByDefault="false"
+        android:queryHint="Şehir, İşlem Adı, İşletme Adı..."
+        android:textColor="#000000"
+        android:textColorHint="#B0B0B0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.561"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
