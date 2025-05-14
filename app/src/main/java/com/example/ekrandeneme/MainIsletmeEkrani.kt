@@ -13,19 +13,29 @@ class MainIsletmeEkrani : AppCompatActivity() {
         binding = ActivityMainIsletmeEkraniBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Giriş yapan işletmenin adı intent ile alınır
+        val isletmeAdi = intent.getStringExtra("isletmeAdi") ?: ""
+        android.widget.Toast.makeText(this, "Panelde işletme adı: $isletmeAdi", android.widget.Toast.LENGTH_LONG).show()
+
         // Randevular butonu tıklama olayı
         binding.btnRandevular.setOnClickListener {
-            // TODO: Randevular ekranına yönlendir
+            val intent = Intent(this, IsletmeRandevularActivity::class.java)
+            intent.putExtra("isletmeAdi", isletmeAdi)
+            startActivity(intent)
         }
 
         // Hizmetler butonu tıklama olayı
         binding.btnHizmetler.setOnClickListener {
-            // TODO: Hizmetler ekranına yönlendir
+            val intent = Intent(this, IsletmeHizmetlerActivity::class.java)
+            intent.putExtra("isletmeAdi", isletmeAdi)
+            startActivity(intent)
         }
 
         // Profil butonu tıklama olayı
         binding.btnProfil.setOnClickListener {
-            // TODO: Profil ekranına yönlendir
+            val intent = Intent(this, IsletmeProfilActivity::class.java)
+            intent.putExtra("isletmeAdi", isletmeAdi)
+            startActivity(intent)
         }
 
         // Çıkış yap butonu tıklama olayı

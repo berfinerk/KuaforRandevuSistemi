@@ -20,14 +20,15 @@ class MainActivity : AppCompatActivity() {
         dbHelper = DatabaseHelper(this)
         dbHelper.openDatabase()
 
+
         // Test için örnek veri ekle
-        try {
-            dbHelper.addUser("test@test.com", "123456", "Test Kullanıcı", "CUSTOMER")
-            dbHelper.addSalon("Güzel Saçlar Kuaför", "Atatürk Cad. No:123", "05551234567", "KUAFOR")
-            dbHelper.addSalon("Beauty Center", "İnönü Cad. No:456", "05557654321", "GUZELLIK_MERKEZI")
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        // try {
+        //     dbHelper.addUser("test@test.com", "123456", "Test Kullanıcı", "CUSTOMER")
+        //     dbHelper.addSalon("Güzel Saçlar Kuaför", "Atatürk Cad. No:123", "05551234567", "kuafor1@gmail.com", "KUAFOR")
+        //     dbHelper.addSalon("Beauty Center", "İnönü Cad. No:456", "05557654321", "guzellik1@gmail.com", "GUZELLIK_MERKEZI")
+        // } catch (e: Exception) {
+        //     e.printStackTrace()
+        // }
 
         // Giriş yap butonu tıklama olayı
         binding.btnGirisYap.setOnClickListener {
@@ -41,9 +42,18 @@ class MainActivity : AppCompatActivity() {
 
             try {
                 if (dbHelper.checkUser(email, password)) {
-                    Toast.makeText(this, "Giriş başarılı!", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, MainKullaniciEkrani::class.java))
-                    finish()
+                    val userType = dbHelper.getUserType(email)
+                    if (userType == "CUSTOMER") {
+                        // Email bilgisini kaydet
+                        val sharedPref = getSharedPreferences("KullaniciBilgi", MODE_PRIVATE)
+                        sharedPref.edit().putString("email", email).apply()
+
+                        Toast.makeText(this, "Giriş başarılı!", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this, MainKullaniciEkrani::class.java))
+                        finish()
+                    } else {
+                        Toast.makeText(this, "Bu giriş sadece kullanıcılar içindir.", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
                     Toast.makeText(this, "Geçersiz e-posta veya şifre", Toast.LENGTH_SHORT).show()
                 }

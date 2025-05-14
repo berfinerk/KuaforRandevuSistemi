@@ -1,33 +1,19 @@
 package com.example.ekrandeneme
 
-<<<<<<< HEAD
-=======
 import android.content.Intent
->>>>>>> 4690fb7 (salonlar listelendi)
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-<<<<<<< HEAD
-import com.example.ekrandeneme.databinding.ActivityMainGuzellikMerkeziListesiBinding
-import com.example.ekrandeneme.databinding.ActivityMainKuaforListesiBinding
-
-class MainGuzellikMerkeziListesi : AppCompatActivity() {
-    private lateinit var binding: ActivityMainGuzellikMerkeziListesiBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainGuzellikMerkeziListesiBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-=======
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import com.example.ekrandeneme.database.DatabaseHelper
 
 class MainGuzellikMerkeziListesi : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_guzellik_merkezi_listesi)
->>>>>>> 4690fb7 (salonlar listelendi)
         enableEdgeToEdge()
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -35,29 +21,23 @@ class MainGuzellikMerkeziListesi : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-<<<<<<< HEAD
-=======
 
         val listView = findViewById<ListView>(R.id.listViewGuzellikMerkezleri)
-        val guzellikMerkezleri = arrayOf(
-            "Güzellik Merkezi 1",
-            "Güzellik Merkezi 2",
-            "Güzellik Merkezi 3"
-        )
+        val dbHelper = DatabaseHelper(this)
+        dbHelper.openDatabase()
+        val salonlar = dbHelper.getAllSalons()
+        dbHelper.close()
+        val guzellikMerkezleri = salonlar.filter { it["type"] == "GUZELLIK_MERKEZI" }
+        val isimVeAdresListesi = guzellikMerkezleri.map { "${it["name"]} - ${it["address"]}" }
 
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, guzellikMerkezleri)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, isimVeAdresListesi)
         listView.adapter = adapter
 
         listView.setOnItemClickListener { _, _, position, _ ->
             val selectedMerkez = guzellikMerkezleri[position]
-            val intent = when (selectedMerkez) {
-                "Güzellik Merkezi 1" -> Intent(this, GuzellikMerkezi1Activity::class.java)
-                "Güzellik Merkezi 2" -> Intent(this, GuzellikMerkezi2Activity::class.java)
-                "Güzellik Merkezi 3" -> Intent(this, GuzellikMerkezi3Activity::class.java)
-                else -> null
-            }
-            intent?.let { startActivity(it) }
+            val intent = Intent(this, IsletmeDetayActivity::class.java)
+            intent.putExtra("isletmeId", selectedMerkez["id"])
+            startActivity(intent)
         }
->>>>>>> 4690fb7 (salonlar listelendi)
     }
 }

@@ -8,6 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import com.example.ekrandeneme.database.DatabaseHelper
 
 class MainKuaforListesi : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,15 +23,14 @@ class MainKuaforListesi : AppCompatActivity() {
         }
 
         val listView = findViewById<ListView>(R.id.listViewKuaforler)
-        val kuaforler = arrayOf(
-            "Güzel Saçlar Kuaför - Atatürk Cad. No:123",
-            "Modern Kesim - İnönü Cad. No:45",
-            "Elit Kuaför - Cumhuriyet Cad. No:78",
-            "Saç Tasarım Merkezi - Bağdat Cad. No:90",
-            "Pro Kuaför - Bahçelievler Cad. No:34"
-        )
+        val dbHelper = DatabaseHelper(this)
+        dbHelper.openDatabase()
+        val salonlar = dbHelper.getAllSalons()
+        dbHelper.close()
+        val kuaforler = salonlar.filter { it["type"] == "KUAFOR" }
+        val isimVeAdresListesi = kuaforler.map { "${it["name"]} - ${it["address"]}" }
 
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, kuaforler)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, isimVeAdresListesi)
         listView.adapter = adapter
 
         listView.setOnItemClickListener { _, _, position, _ ->

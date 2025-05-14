@@ -33,5 +33,18 @@ class MainKullaniciEkrani : AppCompatActivity() {
             intent= Intent(this,MainGuzellikMerkeziListesi::class.java)
             startActivity(intent)
         }
+
+        // Çıkış yap butonu ekle
+        binding.btnCikis.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            finish()
+        }
+
+        binding.btnGecmisRandevular.setOnClickListener {
+            val intent = Intent(this, GecmisRandevularActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

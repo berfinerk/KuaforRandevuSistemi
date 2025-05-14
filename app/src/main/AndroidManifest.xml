@@ -47,8 +47,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
-=======
         <activity
             android:name=".SacTasarimMerkeziActivity"
             android:exported="false" />
@@ -76,7 +74,14 @@
         <activity
             android:name=".RandevuAlActivity"
             android:exported="false" />
->>>>>>> 4690fb7 (salonlar listelendi)
+        <activity
+            android:name=".IsletmeRandevularActivity"
+            android:exported="false" />
+        <activity android:name=".GuzellikMerkeziDetayActivity" />
+        <activity android:name=".IsletmeDetayActivity" />
+        <activity android:name=".IsletmeHizmetlerActivity" />
+        <activity android:name=".IsletmeProfilActivity" />
+        <activity android:name=".GecmisRandevularActivity" />
     </application>
 
 </manifest>

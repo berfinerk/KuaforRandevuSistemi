@@ -20,13 +20,6 @@ class MainIsletmeGiris : AppCompatActivity() {
         dbHelper = DatabaseHelper(this)
         dbHelper.openDatabase()
 
-        // Test için örnek işletme verisi ekle
-        try {
-            dbHelper.addUser("isletme@test.com", "123456", "Test İşletme", "BUSINESS")
-            dbHelper.addSalon("Test Kuaför", "Test Mahallesi No:1", "05551234567", "KUAFOR")
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
 
         // Giriş yap butonu tıklama olayı
         binding.btnGirisYap.setOnClickListener {
@@ -43,8 +36,13 @@ class MainIsletmeGiris : AppCompatActivity() {
                     // Kullanıcı tipini kontrol et
                     val userType = dbHelper.getUserType(email)
                     if (userType == "BUSINESS") {
+                        // Giriş yapan işletmenin salon adını bul (email ile eşleşen)
+                        val salons = dbHelper.getAllSalons()
+                        val salonName = salons.find { it["email"] == email }?.get("name") ?: ""
+                        val intent = Intent(this, MainIsletmeEkrani::class.java)
+                        intent.putExtra("isletmeAdi", salonName)
                         Toast.makeText(this, "Giriş başarılı!", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this, MainIsletmeEkrani::class.java))
+                        startActivity(intent)
                         finish()
                     } else {
                         Toast.makeText(this, "Bu hesap bir işletme hesabı değil", Toast.LENGTH_SHORT).show()

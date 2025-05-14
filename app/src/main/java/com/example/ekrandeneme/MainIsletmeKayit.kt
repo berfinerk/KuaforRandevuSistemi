@@ -39,8 +39,17 @@ class MainIsletmeKayit : AppCompatActivity() {
                 val userId = dbHelper.addUser(email, password, name, "BUSINESS")
                 if (userId > 0) {
                     // Sonra salonu ekle
-                    val salonId = dbHelper.addSalon(name, address, phone, salonType)
+                    val salonId = dbHelper.addSalon(name, address, phone, email, salonType)
                     if (salonId > 0) {
+                        // ÖRNEK HİZMETLERİ EKLE (sadece kuaför için)
+                        if (salonType == "KUAFOR") {
+                            dbHelper.addService(salonId.toString(), "Manikür", "200₺")
+                            dbHelper.addService(salonId.toString(), "Pedikür", "250₺")
+                            dbHelper.addService(salonId.toString(), "Saç Kesimi", "300₺")
+                        } else if (salonType == "GUZELLIK_MERKEZI") {
+                            dbHelper.addService(salonId.toString(), "Cilt Bakımı", "500₺")
+                            dbHelper.addService(salonId.toString(), "Kaş Tasarımı", "150₺")
+                        }
                         Toast.makeText(this, "Kayıt başarılı! Giriş yapabilirsiniz.", Toast.LENGTH_SHORT).show()
                         finish()
                     } else {

@@ -2,6 +2,7 @@ package com.example.ekrandeneme
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TableRow
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -44,17 +45,19 @@ class GuzellikMerkeziActivity : AppCompatActivity() {
             ucretTextView.text = ucret
             ucretTextView.setPadding(16, 8, 16, 8)
             
-            row.addView(hizmetTextView)
-            row.addView(ucretTextView)
-            
-            // Hizmet satırına tıklama özelliği ekle
-            row.setOnClickListener {
+            val btnRandevuAl = Button(this)
+            btnRandevuAl.text = "Randevu Al"
+            btnRandevuAl.setOnClickListener {
                 val intent = Intent(this, RandevuAlActivity::class.java)
                 intent.putExtra("isletmeAdi", "Güzellik Merkezi")
                 intent.putExtra("hizmetAdi", hizmet)
                 intent.putExtra("hizmetUcreti", ucret)
                 startActivity(intent)
             }
+            
+            row.addView(hizmetTextView)
+            row.addView(ucretTextView)
+            row.addView(btnRandevuAl)
             
             binding.tableLayoutHizmetler.addView(row)
         }

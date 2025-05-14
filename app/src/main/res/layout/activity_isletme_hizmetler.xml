@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/editTextHizmetAdi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Hizmet Adı" />
+
+    <EditText
+        android:id="@+id/editTextHizmetFiyat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Fiyat"
+        android:inputType="text" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bu hizmeti yapabilen çalışanlar"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"/>
+    <LinearLayout
+        android:id="@+id/calisanSecimLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="8dp"/>
+
+    <Button
+        android:id="@+id/btnHizmetEkle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hizmet Ekle" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <LinearLayout
+            android:id="@+id/hizmetlerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
+</LinearLayout> 
