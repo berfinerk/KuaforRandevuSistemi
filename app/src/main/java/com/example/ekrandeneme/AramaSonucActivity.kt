@@ -2,97 +2,65 @@ package com.example.ekrandeneme
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.ekrandeneme.databinding.ActivityMainBinding
-import com.example.ekrandeneme.databinding.ActivityMainKayitOlBinding
-import com.example.ekrandeneme.databinding.ActivityMainKullaniciEkraniBinding
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.ekrandeneme.database.DatabaseHelper
+import com.example.ekrandeneme.databinding.ActivityAramaSonucBinding
 
-class MainKullaniciEkrani : AppCompatActivity() {
-    private lateinit var binding: ActivityMainKullaniciEkraniBinding
-    private lateinit var recyclerView: RecyclerView
+class AramaSonucActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityAramaSonucBinding
     private lateinit var adapter: SalonAdapter
     private var salonList: List<Map<String, String>> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainKullaniciEkraniBinding.inflate(layoutInflater)
+        binding = ActivityAramaSonucBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        enableEdgeToEdge()
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
-        // RecyclerView ve Adapter
-        recyclerView = binding.recyclerViewAramaSonuc
-        recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = SalonAdapter { salon ->
             val intent = Intent(this, IsletmeDetayActivity::class.java)
             intent.putExtra("isletmeId", salon["id"])
             startActivity(intent)
         }
-        recyclerView.adapter = adapter
+        binding.recyclerViewAramaSonuc.layoutManager = LinearLayoutManager(this)
+        binding.recyclerViewAramaSonuc.adapter = adapter
 
-        // Arama kutusuna tıklanınca yeni ekrana geç
-        binding.searchView.setOnQueryTextFocusChangeListener { v, hasFocus ->
-            if (hasFocus) {
-                val intent = Intent(this, AramaSonucActivity::class.java)
-                startActivity(intent)
-                binding.searchView.clearFocus()
+        // Eğer ana ekrandan bir arama sorgusu geldiyse onu göster
+        val initialQuery = intent.getStringExtra("query") ?: ""
+        if (initialQuery.isNotBlank()) {
+            binding.searchView.setQuery(initialQuery, false)
+            searchAndShowResults(initialQuery)
+        }
+
+        binding.searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let { searchAndShowResults(it) }
+                return true
             }
-        }
-        binding.searchView.setOnClickListener {
-            val intent = Intent(this, AramaSonucActivity::class.java)
-            startActivity(intent)
-        }
-        // Arama kutusunu pasif yap (sadece tıklama için)
-        binding.searchView.isFocusable = false
-        binding.searchView.isIconified = true
-
-        binding.kuaforBtn.setOnClickListener{
-            intent= Intent(this,MainKuaforListesi::class.java)
-            startActivity(intent)
-        }
-        binding.guzellikBtn.setOnClickListener{
-            intent= Intent(this,MainGuzellikMerkeziListesi::class.java)
-            startActivity(intent)
-        }
-
-        // Çıkış yap butonu ekle
-        binding.btnCikis.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-            finish()
-        }
-
-        binding.btnGecmisRandevular.setOnClickListener {
-            val intent = Intent(this, GecmisRandevularActivity::class.java)
-            startActivity(intent)
-        }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrBlank()) {
+                    adapter.submitList(emptyList())
+                } else {
+                    searchAndShowResults(newText)
+                }
+                return true
+            }
+        })
     }
 
     private fun searchAndShowResults(query: String) {
-        val dbHelper = com.example.ekrandeneme.database.DatabaseHelper(this)
+        val dbHelper = DatabaseHelper(this)
         dbHelper.openDatabase()
         salonList = dbHelper.searchSalonsByNameOrService(query)
         dbHelper.close()
         adapter.submitList(salonList)
-        recyclerView.visibility = if (salonList.isEmpty()) View.GONE else View.VISIBLE
     }
 
-    // Basit bir RecyclerView Adapter
     class SalonAdapter(val onClick: (Map<String, String>) -> Unit) : RecyclerView.Adapter<SalonAdapter.SalonViewHolder>() {
         private var items: List<Map<String, String>> = emptyList()
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SalonViewHolder {
@@ -131,4 +99,4 @@ class MainKullaniciEkrani : AppCompatActivity() {
             }
         }
     }
-}
+} 

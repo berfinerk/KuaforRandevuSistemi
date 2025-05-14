@@ -140,6 +140,74 @@ class GecmisRandevularActivity : AppCompatActivity() {
                     textView.textSize = 16f
                     textView.setPadding(8, 8, 8, 8)
                     layout.addView(textView)
+
+                    // PUANLAMA ARAYÜZÜ
+                    val randevuId = randevu["id"] ?: ""
+                    val status = randevu["status"] ?: ""
+                    if (status == "APPROVED" && !employeeId.isNullOrBlank()) {
+                        val alreadyRated = dbHelper.hasRatingForAppointment(randevuId)
+                        if (!alreadyRated) {
+                            val btnPuanla = Button(this)
+                            btnPuanla.text = "Puanla / Yorum Yap"
+                            btnPuanla.setOnClickListener {
+                                val dialogView = layoutInflater.inflate(R.layout.dialog_rating, null)
+                                val ratingBar = dialogView.findViewById<android.widget.RatingBar>(R.id.dialogRatingBar)
+                                val yorumEdit = dialogView.findViewById<android.widget.EditText>(R.id.dialogEditTextYorum)
+                                val dialog = android.app.AlertDialog.Builder(this)
+                                    .setTitle("Puanla ve Yorum Yap")
+                                    .setView(dialogView)
+                                    .setPositiveButton("Kaydet", null)
+                                    .setNegativeButton("İptal", null)
+                                    .create()
+                                dialog.setOnShowListener {
+                                    val btn = dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
+                                    btn.setOnClickListener {
+                                        val puan = ratingBar.rating.toInt()
+                                        val yorum = yorumEdit.text.toString().trim()
+                                        if (puan in 1..5) {
+                                            val dbHelperDialog = com.example.ekrandeneme.database.DatabaseHelper(this)
+                                            dbHelperDialog.openDatabase()
+                                            val result = dbHelperDialog.addRating(employeeId, userEmail, randevuId, puan, yorum)
+                                            dbHelperDialog.close()
+                                            if (result > 0) {
+                                                android.widget.Toast.makeText(this, "Puanınız kaydedildi!", android.widget.Toast.LENGTH_SHORT).show()
+                                                dialog.dismiss()
+                                                gosterRandevular(tip) // Ekranı yenile
+                                            } else {
+                                                android.widget.Toast.makeText(this, "Puan kaydedilemedi! Lütfen tekrar deneyin.", android.widget.Toast.LENGTH_SHORT).show()
+                                            }
+                                        } else {
+                                            android.widget.Toast.makeText(this, "Lütfen 1-5 arası bir puan verin!", android.widget.Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                }
+                                dialog.show()
+                            }
+                            layout.addView(btnPuanla)
+                        } else {
+                            // Puan ve yorumu göster
+                            val cursor = dbHelper.database?.rawQuery(
+                                "SELECT rating, comment FROM ratings WHERE randevu_id = ?",
+                                arrayOf(randevuId)
+                            )
+                            cursor?.use {
+                                if (it.moveToFirst()) {
+                                    val puan = it.getInt(it.getColumnIndexOrThrow("rating"))
+                                    val yorum = it.getString(it.getColumnIndexOrThrow("comment"))
+                                    val puanText = TextView(this)
+                                    puanText.text = "Puanınız: " + "★".repeat(puan) + "${if (puan < 5) "☆".repeat(5-puan) else ""}"
+                                    puanText.setPadding(8, 0, 8, 8)
+                                    layout.addView(puanText)
+                                    if (!yorum.isNullOrBlank()) {
+                                        val yorumText = TextView(this)
+                                        yorumText.text = "Yorumunuz: $yorum"
+                                        yorumText.setPadding(8, 0, 8, 8)
+                                        layout.addView(yorumText)
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
                 dbHelper.close()
             }

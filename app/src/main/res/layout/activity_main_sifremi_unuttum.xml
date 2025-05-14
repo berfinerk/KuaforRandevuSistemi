@@ -38,6 +38,52 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
 
     <Button
+        android:id="@+id/btnKodGonder"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/buttonarkaplan"
+        android:backgroundTint="@android:color/white"
+        android:text="KODU GÖNDER"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/editTextEmail"
+        app:layout_constraintStart_toStartOf="@+id/editTextEmail"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
+
+    <EditText
+        android:id="@+id/editTextKod"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/edittextarkaplan"
+        android:hint="6 Haneli Kod"
+        android:inputType="number"
+        android:padding="15dp"
+        android:textColor="@android:color/black"
+        android:textColorHint="#808080"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/editTextEmail"
+        app:layout_constraintStart_toStartOf="@+id/editTextEmail"
+        app:layout_constraintTop_toBottomOf="@+id/btnKodGonder" />
+
+    <EditText
+        android:id="@+id/editTextYeniSifre"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/edittextarkaplan"
+        android:hint="Yeni Şifre"
+        android:inputType="textPassword"
+        android:padding="15dp"
+        android:textColor="@android:color/black"
+        android:textColorHint="#808080"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/editTextKod"
+        app:layout_constraintStart_toStartOf="@+id/editTextKod"
+        app:layout_constraintTop_toBottomOf="@+id/editTextKod" />
+
+    <Button
         android:id="@+id/btnSifreYenile"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -47,8 +93,9 @@
         android:text="ŞİFREMİ YENİLE"
         android:textColor="@android:color/black"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/editTextEmail"
-        app:layout_constraintStart_toStartOf="@+id/editTextEmail"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/editTextYeniSifre"
+        app:layout_constraintStart_toStartOf="@+id/editTextYeniSifre"
+        app:layout_constraintTop_toBottomOf="@+id/editTextYeniSifre" />
 
 </androidx.constraintlayout.widget.ConstraintLayout> 

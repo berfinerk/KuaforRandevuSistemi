@@ -38,6 +38,13 @@ class MainIsletmeEkrani : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // Geri Dönüşler butonu tıklama olayı
+        binding.btnGeriDonusler.setOnClickListener {
+            val intent = Intent(this, GeriDonuslerActivity::class.java)
+            intent.putExtra("isletmeAdi", isletmeAdi)
+            startActivity(intent)
+        }
+
         // Çıkış yap butonu tıklama olayı
         binding.btnCikis.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))

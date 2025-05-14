@@ -57,12 +57,26 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/buttonarkaplan"
         android:backgroundTint="@android:color/white"
-        android:text="PROFİL"
+        android:text="HAKKIMIZDA ve ÇALIŞANLAR"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/btnHizmetler"
         app:layout_constraintStart_toStartOf="@+id/btnHizmetler"
         app:layout_constraintTop_toBottomOf="@+id/btnHizmetler" />
+
+    <Button
+        android:id="@+id/btnGeriDonusler"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/buttonarkaplan"
+        android:backgroundTint="@android:color/white"
+        android:text="GERİ DÖNÜŞLER"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/btnProfil"
+        app:layout_constraintStart_toStartOf="@+id/btnProfil"
+        app:layout_constraintTop_toBottomOf="@+id/btnProfil" />
 
     <Button
         android:id="@+id/btnCikis"
@@ -76,6 +90,6 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/btnProfil"
         app:layout_constraintStart_toStartOf="@+id/btnProfil"
-        app:layout_constraintTop_toBottomOf="@+id/btnProfil" />
+        app:layout_constraintTop_toBottomOf="@+id/btnGeriDonusler" />
 
 </androidx.constraintlayout.widget.ConstraintLayout> 

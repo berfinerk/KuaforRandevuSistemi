@@ -105,6 +105,52 @@ class IsletmeProfilActivity : AppCompatActivity() {
             }
         }
 
+        val btnGeriDonusler = Button(this)
+        btnGeriDonusler.text = "Geri Dönüşler"
+        btnGeriDonusler.setOnClickListener {
+            dbHelper.openDatabase()
+            val calisanlar = dbHelper.getEmployeesForSalon(salonId)
+            dbHelper.close()
+            val builder = android.app.AlertDialog.Builder(this)
+            builder.setTitle("Çalışanlara Gelen Puanlar ve Yorumlar")
+            val scroll = ScrollView(this)
+            val layout = LinearLayout(this)
+            layout.orientation = LinearLayout.VERTICAL
+            calisanlar.forEach { calisan ->
+                val ad = calisan["name"] ?: "?"
+                val role = calisan["role"] ?: ""
+                val empId = calisan["id"] ?: return@forEach
+                dbHelper.openDatabase()
+                val avg = dbHelper.getEmployeeAverageRating(empId)
+                val yorumlar = dbHelper.getEmployeeComments(empId)
+                dbHelper.close()
+                val calisanText = TextView(this)
+                calisanText.text = "$ad${if (role.isNotBlank()) " - $role" else ""}  |  Ortalama: ${"%.1f".format(avg)} ★"
+                calisanText.setPadding(8, 16, 8, 4)
+                layout.addView(calisanText)
+                if (yorumlar.isEmpty()) {
+                    val y = TextView(this)
+                    y.text = "Henüz yorum yok."
+                    y.setPadding(16, 0, 8, 8)
+                    layout.addView(y)
+                } else {
+                    yorumlar.forEach { (puan, yorum) ->
+                        val y = TextView(this)
+                        y.text = "${"★".repeat(puan)}${if (puan < 5) "☆".repeat(5-puan) else ""}  $yorum"
+                        y.setPadding(16, 0, 8, 8)
+                        layout.addView(y)
+                    }
+                }
+            }
+            scroll.addView(layout)
+            builder.setView(scroll)
+            builder.setPositiveButton("Kapat", null)
+            builder.show()
+        }
+
+        val anaLayout = findViewById<LinearLayout>(R.id.calisanlarLayout).parent as? LinearLayout
+        anaLayout?.addView(btnGeriDonusler)
+
         calisanlariGoster()
     }
 } 

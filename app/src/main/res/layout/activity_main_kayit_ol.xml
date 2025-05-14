@@ -62,6 +62,32 @@
       app:layout_constraintStart_toStartOf="@+id/editTextEmail"
       app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
 
+  <EditText
+      android:id="@+id/editTextPasswordAgain"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:background="@drawable/edittextarkaplan"
+      android:hint="Şifre Tekrar"
+      android:inputType="textPassword"
+      android:padding="15dp"
+      app:layout_constraintEnd_toEndOf="@+id/editTextPassword"
+      app:layout_constraintStart_toStartOf="@+id/editTextPassword"
+      app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+
+  <EditText
+      android:id="@+id/editTextPhone"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:background="@drawable/edittextarkaplan"
+      android:hint="Telefon"
+      android:inputType="phone"
+      android:padding="15dp"
+      app:layout_constraintEnd_toEndOf="@+id/editTextPasswordAgain"
+      app:layout_constraintStart_toStartOf="@+id/editTextPasswordAgain"
+      app:layout_constraintTop_toBottomOf="@+id/editTextPasswordAgain" />
+
   <Button
       android:id="@+id/btnKayitOl"
       android:layout_width="0dp"
@@ -71,9 +97,9 @@
       android:text="KAYIT OL"
       android:textColor="@color/white"
       android:textSize="18sp"
-      app:layout_constraintEnd_toEndOf="@+id/editTextPassword"
-      app:layout_constraintStart_toStartOf="@+id/editTextPassword"
-      app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+      app:layout_constraintEnd_toEndOf="@+id/editTextPhone"
+      app:layout_constraintStart_toStartOf="@+id/editTextPhone"
+      app:layout_constraintTop_toBottomOf="@+id/editTextPhone" />
 
   <TextView
       android:id="@+id/KayittextView"

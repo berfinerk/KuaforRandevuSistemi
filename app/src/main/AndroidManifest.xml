@@ -82,6 +82,8 @@
         <activity android:name=".IsletmeHizmetlerActivity" />
         <activity android:name=".IsletmeProfilActivity" />
         <activity android:name=".GecmisRandevularActivity" />
+        <activity android:name=".AramaSonucActivity" />
+        <activity android:name=".GeriDonuslerActivity" />
     </application>
 
 </manifest>

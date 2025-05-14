@@ -39,7 +39,7 @@ class IsletmeDetayActivity : AppCompatActivity() {
         binding.textViewIsletmeAdi.text = salon["name"] ?: "İşletme"
         binding.textViewAdres.text = salon["address"] ?: ""
         binding.textViewAciklama.text = "Profesyonel hizmetlerimizle sizlerleyiz."
-        binding.ratingBar.rating = salon["rating"]?.toFloatOrNull() ?: 0f
+        binding.ratingBar.rating = DatabaseHelper(this).apply { openDatabase() }.getSalonAverageRating(isletmeId)
         binding.textViewProfilYazisi.text = if (profilYazisi.isNotBlank()) profilYazisi else "Profil yazısı eklenmemiş."
 
         if (hizmetler.isEmpty()) {
@@ -75,7 +75,21 @@ class IsletmeDetayActivity : AppCompatActivity() {
         binding.btnCalisanlariGor.setOnClickListener {
             val builder = android.app.AlertDialog.Builder(this)
             builder.setTitle("Çalışanlar")
-            val calisanListesi = if (calisanlar.isEmpty()) "Çalışan yok." else calisanlar.joinToString("\n") { it["name"] + (if (!it["role"].isNullOrBlank()) " - ${it["role"]}" else "") }
+            val calisanListesi = if (calisanlar.isEmpty()) {
+                "Çalışan yok."
+            } else {
+                val dbHelper = DatabaseHelper(this)
+                dbHelper.openDatabase()
+                val list = calisanlar.joinToString("\n") { calisan ->
+                    val ad = calisan["name"] ?: "?"
+                    val rol = calisan["role"] ?: ""
+                    val empId = calisan["id"] ?: ""
+                    val avg = dbHelper.getEmployeeAverageRating(empId)
+                    "$ad${if (rol.isNotBlank()) " - $rol" else ""}  |  Ortalama: ${"%.1f".format(avg)} ★"
+                }
+                dbHelper.close()
+                list
+            }
             builder.setMessage(calisanListesi)
             builder.setPositiveButton("Kapat", null)
             builder.show()

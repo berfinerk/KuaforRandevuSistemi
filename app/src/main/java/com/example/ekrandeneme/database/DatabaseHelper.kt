@@ -119,12 +119,26 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             )
         """.trimIndent()
 
+        // Ratings tablosu
+        val createRatingsTable = """
+            CREATE TABLE IF NOT EXISTS ratings (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                employee_id INTEGER NOT NULL,
+                user_email TEXT NOT NULL,
+                randevu_id INTEGER NOT NULL,
+                rating INTEGER NOT NULL,
+                comment TEXT,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        """.trimIndent()
+
         db.execSQL(createUsersTable)
         db.execSQL(createSalonsTable)
         db.execSQL(createAppointmentsTable)
         db.execSQL(createServicesTable)
         db.execSQL(createEmployeesTable)
         db.execSQL(createServiceEmployeesTable)
+        db.execSQL(createRatingsTable)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -141,6 +155,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db.execSQL("DROP TABLE IF EXISTS $TABLE_SERVICES")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_EMPLOYEES")
         db.execSQL("DROP TABLE IF EXISTS service_employees")
+        db.execSQL("DROP TABLE IF EXISTS ratings")
         onCreate(db)
     }
 
@@ -440,6 +455,150 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             }
         }
         return result
+    }
+
+    // Salon adı veya hizmet adı ile arama
+    fun searchSalonsByNameOrService(query: String): List<Map<String, String>> {
+        val salons = mutableListOf<Map<String, String>>()
+        val lowerQuery = "%${query.lowercase()}%"
+        val sql = """
+            SELECT DISTINCT s.id, s.salon_name AS name, s.address, s.phone, s.email, s.salon_type AS type
+            FROM salons s
+            LEFT JOIN services sv ON s.id = sv.salon_id
+            WHERE LOWER(s.salon_name) LIKE ? OR LOWER(sv.name) LIKE ?
+        """.trimIndent()
+        val cursor = database?.rawQuery(sql, arrayOf(lowerQuery, lowerQuery))
+        cursor?.use {
+            while (it.moveToNext()) {
+                val salon = mutableMapOf<String, String>()
+                salon["id"] = it.getString(it.getColumnIndexOrThrow("id"))
+                salon["name"] = it.getString(it.getColumnIndexOrThrow("name"))
+                salon["address"] = it.getString(it.getColumnIndexOrThrow("address"))
+                salon["phone"] = it.getString(it.getColumnIndexOrThrow("phone"))
+                salon["email"] = it.getString(it.getColumnIndexOrThrow("email"))
+                salon["type"] = it.getString(it.getColumnIndexOrThrow("type"))
+                salons.add(salon)
+            }
+        }
+        return salons
+    }
+
+    // Belirli bir randevu için puan var mı?
+    fun hasRatingForAppointment(randevuId: String): Boolean {
+        val cursor = database?.rawQuery(
+            "SELECT COUNT(*) FROM ratings WHERE randevu_id = ?",
+            arrayOf(randevuId)
+        )
+        var result = false
+        cursor?.use {
+            if (it.moveToFirst()) {
+                result = it.getInt(0) > 0
+            }
+        }
+        return result
+    }
+
+    // Yeni puan ve yorum ekle
+    fun addRating(employeeId: String, userEmail: String, randevuId: String, rating: Int, comment: String): Long {
+        val values = ContentValues().apply {
+            put("employee_id", employeeId)
+            put("user_email", userEmail)
+            put("randevu_id", randevuId)
+            put("rating", rating)
+            put("comment", comment)
+        }
+        return database?.insert("ratings", null, values) ?: -1
+    }
+
+    // Bir çalışanın ortalama puanını getir
+    fun getEmployeeAverageRating(employeeId: String): Float {
+        val cursor = database?.rawQuery(
+            "SELECT AVG(rating) FROM ratings WHERE employee_id = ?",
+            arrayOf(employeeId)
+        )
+        var avg = 0f
+        cursor?.use {
+            if (it.moveToFirst()) {
+                avg = it.getFloat(0)
+            }
+        }
+        return avg
+    }
+
+    // Bir çalışanın tüm yorumlarını getir
+    fun getEmployeeComments(employeeId: String): List<Pair<Int, String>> {
+        val comments = mutableListOf<Pair<Int, String>>()
+        val cursor = database?.rawQuery(
+            "SELECT rating, comment FROM ratings WHERE employee_id = ? AND comment IS NOT NULL AND comment != '' ORDER BY created_at DESC",
+            arrayOf(employeeId)
+        )
+        cursor?.use {
+            while (it.moveToNext()) {
+                val rating = it.getInt(0)
+                val comment = it.getString(1)
+                comments.add(rating to comment)
+            }
+        }
+        return comments
+    }
+
+    // Bir salonun ortalama puanını getir (tüm çalışanlarının ortalaması)
+    fun getSalonAverageRating(salonId: String): Float {
+        val cursor = database?.rawQuery(
+            "SELECT AVG(r.rating) FROM ratings r INNER JOIN employees e ON r.employee_id = e.id WHERE e.salon_id = ?",
+            arrayOf(salonId)
+        )
+        var avg = 0f
+        cursor?.use {
+            if (it.moveToFirst()) {
+                avg = it.getFloat(0)
+            }
+        }
+        return avg
+    }
+
+    // Bir çalışanın tüm yorumlarını detaylı getir (hizmet, tarih, saat dahil)
+    fun getEmployeeDetailedComments(employeeId: String): List<Map<String, String>> {
+        val comments = mutableListOf<Map<String, String>>()
+        val cursor = database?.rawQuery(
+            "SELECT r.rating, r.comment, r.randevu_id, a.hizmet, a.tarih, a.saat " +
+            "FROM ratings r INNER JOIN appointments a ON r.randevu_id = a.id " +
+            "WHERE r.employee_id = ? AND r.comment IS NOT NULL AND r.comment != '' ORDER BY r.created_at DESC",
+            arrayOf(employeeId)
+        )
+        cursor?.use {
+            while (it.moveToNext()) {
+                val map = mutableMapOf<String, String>()
+                map["rating"] = it.getInt(0).toString()
+                map["comment"] = it.getString(1)
+                map["randevu_id"] = it.getString(2)
+                map["hizmet"] = it.getString(3)
+                map["tarih"] = it.getString(4)
+                map["saat"] = it.getString(5)
+                comments.add(map)
+            }
+        }
+        return comments
+    }
+
+    // Kullanıcı şifresini e-posta ile güncelle
+    fun updateUserPassword(email: String, newPassword: String): Int {
+        val values = ContentValues().apply { put(COLUMN_PASSWORD, newPassword) }
+        return database?.update(TABLE_USERS, values, "$COLUMN_EMAIL = ?", arrayOf(email)) ?: 0
+    }
+
+    // E-posta ile kullanıcı var mı kontrol et
+    fun isUserExists(email: String): Boolean {
+        val cursor = database?.query(
+            TABLE_USERS,
+            arrayOf(COLUMN_ID),
+            "$COLUMN_EMAIL = ?",
+            arrayOf(email),
+            null, null, null
+        )
+        val exists = cursor?.count ?: 0 > 0
+        cursor?.close()
+        return exists
     }
 
     override fun close() {
