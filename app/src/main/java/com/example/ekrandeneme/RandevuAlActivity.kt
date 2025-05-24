@@ -141,6 +141,15 @@ class RandevuAlActivity : AppCompatActivity() {
         val dateStr = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(selectedDate.time)
         val sharedPref = getSharedPreferences("KullaniciBilgi", MODE_PRIVATE)
         val userEmail = sharedPref.getString("email", "") ?: ""
+        val emailPattern = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")
+        if (userEmail.isEmpty() || !emailPattern.matches(userEmail)) {
+            Toast.makeText(this, "Lütfen üye girişi yapın", Toast.LENGTH_LONG).show()
+            val intent = android.content.Intent(this, MainActivity::class.java)
+            intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            finish()
+            return
+        }
         val dbHelper = DatabaseHelper(this)
         dbHelper.openDatabase()
         val slotTaken = dbHelper.isAppointmentSlotTaken(selectedEmployeeId, dateStr, selectedTime)

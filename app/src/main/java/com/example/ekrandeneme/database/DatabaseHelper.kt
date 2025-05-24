@@ -587,20 +587,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return database?.update(TABLE_USERS, values, "$COLUMN_EMAIL = ?", arrayOf(email)) ?: 0
     }
 
-    // E-posta ile kullanıcı var mı kontrol et
-    fun isUserExists(email: String): Boolean {
-        val cursor = database?.query(
-            TABLE_USERS,
-            arrayOf(COLUMN_ID),
-            "$COLUMN_EMAIL = ?",
-            arrayOf(email),
-            null, null, null
-        )
-        val exists = cursor?.count ?: 0 > 0
-        cursor?.close()
-        return exists
-    }
-
     override fun close() {
         database?.close()
         super.close()

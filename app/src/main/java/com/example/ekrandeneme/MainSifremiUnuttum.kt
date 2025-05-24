@@ -29,9 +29,9 @@ class MainSifremiUnuttum : AppCompatActivity() {
                 return@setOnClickListener
             }
             dbHelper.openDatabase()
-            val exists = dbHelper.isUserExists(email)
+            val userExists = dbHelper.getUserName(email) != "Bilinmeyen Kullanıcı"
             dbHelper.close()
-            if (!exists) {
+            if (!userExists) {
                 Toast.makeText(this, "Bu e-posta ile kayıtlı kullanıcı bulunamadı!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }

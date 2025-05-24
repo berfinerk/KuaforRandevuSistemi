@@ -77,6 +77,14 @@ class MainActivity : AppCompatActivity() {
         binding.btnIsletmeGirisi.setOnClickListener {
             startActivity(Intent(this, MainIsletmeGiris::class.java))
         }
+
+        // Üye Olmadan devam et butonu tıklama olayı
+        binding.btnGirisYap2.setOnClickListener {
+            // Tüm kullanıcı bilgilerini temizle
+            val sharedPref = getSharedPreferences("KullaniciBilgi", MODE_PRIVATE)
+            sharedPref.edit().clear().apply()
+            startActivity(Intent(this, MainKullaniciEkrani::class.java))
+        }
     }
 
     override fun onDestroy() {

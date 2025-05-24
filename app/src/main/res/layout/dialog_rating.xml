@@ -1,27 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="24dp">
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp"
+    android:layout_margin="16dp">
 
-    <RatingBar
-        android:id="@+id/dialogRatingBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:numStars="5"
-        android:stepSize="1"
-        android:rating="5"
-        android:isIndicator="false"
-        style="@android:style/Widget.RatingBar"
-        />
-
-    <EditText
-        android:id="@+id/dialogEditTextYorum"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Yorumunuz (isteğe bağlı)"
-        android:inputType="text"
-        android:layout_marginTop="16dp"/>
+        android:orientation="vertical"
+        android:padding="24dp">
 
-</LinearLayout> 
+        <RatingBar
+            android:id="@+id/dialogRatingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="1"
+            android:rating="5"
+            android:isIndicator="false"
+            style="@android:style/Widget.RatingBar" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Yorumunuz (isteğe bağlı)">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/dialogEditTextYorum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView> 

@@ -142,7 +142,7 @@ class IsletmeRandevularActivity : AppCompatActivity() {
                     randevuLayout.addView(btnReddet)
                 }
                 layout.addView(randevuLayout)
-            }
+        }
         dbHelper.close()
                 val toplamText = TextView(this)
                 toplamText.text = "Toplam Fiyat: ${"%.2f".format(toplamFiyat)} TL"
