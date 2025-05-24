@@ -30,7 +30,7 @@
                 android:id="@+id/textViewTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="İŞLETME KAYIT"
+                android:text="@string/register"
                 android:textColor="#222222"
                 android:textSize="30sp"
                 android:textStyle="bold"
@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="İşletme Adı">
+                android:hint="@string/business_name">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextName"
                     android:layout_width="match_parent"
@@ -54,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="E-posta">
+                android:hint="@string/email">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextEmail"
                     android:layout_width="match_parent"
@@ -67,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="Şifre">
+                android:hint="@string/password">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextPassword"
                     android:layout_width="match_parent"
@@ -80,7 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="Şifre Tekrar">
+                android:hint="@string/password_again">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextPasswordAgain"
                     android:layout_width="match_parent"
@@ -93,7 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="Adres">
+                android:hint="@string/address">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextAddress"
                     android:layout_width="match_parent"
@@ -106,7 +106,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="Telefon">
+                android:hint="@string/phone">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextPhone"
                     android:layout_width="match_parent"
@@ -125,7 +125,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Kuaför"
+                    android:text="@string/hairdresser"
                     android:textColor="#43E97B"
                     app:cornerRadius="12dp"
                     app:backgroundTint="#F7B42C" />
@@ -134,7 +134,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Güzellik Merkezi"
+                    android:text="@string/beauty_center"
                     android:textColor="#43E97B"
                     app:cornerRadius="12dp"
                     app:backgroundTint="#F7B42C" />
@@ -145,7 +145,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="KAYIT OL"
+                android:text="@string/register"
                 android:textColor="#43E97B"
                 android:textSize="18sp"
                 app:cornerRadius="16dp"

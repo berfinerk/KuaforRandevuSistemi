@@ -10,6 +10,7 @@ class IsletmeProfilActivity : AppCompatActivity() {
     private var salonId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setAppLocale()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_isletme_profil)
 
@@ -19,7 +20,7 @@ class IsletmeProfilActivity : AppCompatActivity() {
         val salon = dbHelper.getAllSalons().find { it["name"] == isletmeAdi }
         salonId = salon?.get("id") ?: ""
         if (salonId.isBlank()) {
-            Toast.makeText(this, "İşletme bulunamadı!", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.business_not_found), Toast.LENGTH_LONG).show()
             finish()
             return
         }
@@ -43,7 +44,7 @@ class IsletmeProfilActivity : AppCompatActivity() {
                 calisanlarLayout.removeAllViews()
                 if (calisanlar.isEmpty()) {
                     val emptyText = TextView(this)
-                    emptyText.text = "Çalışan yok."
+                    emptyText.text = getString(R.string.employee_not_found)
                     calisanlarLayout.addView(emptyText)
                 } else {
                     calisanlar.forEach { calisan ->
@@ -54,7 +55,7 @@ class IsletmeProfilActivity : AppCompatActivity() {
                         textView.textSize = 16f
                         textView.setPadding(8, 8, 8, 8)
                         val btnSil = Button(this)
-                        btnSil.text = "Sil"
+                        btnSil.text = getString(R.string.delete)
                         btnSil.setOnClickListener {
                             try {
                                 dbHelper.openDatabase()
@@ -62,7 +63,7 @@ class IsletmeProfilActivity : AppCompatActivity() {
                                 dbHelper.close()
                                 calisanlariGoster()
                             } catch (e: Exception) {
-                                Toast.makeText(this, "Çalışan silinirken hata oluştu!", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this, getString(R.string.employee_delete_error), Toast.LENGTH_SHORT).show()
                             }
                         }
                         row.addView(textView)
@@ -73,7 +74,7 @@ class IsletmeProfilActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 calisanlarLayout.removeAllViews()
                 val errorText = TextView(this)
-                errorText.text = "Çalışanlar yüklenemedi! (Tablo eksik veya veritabanı hatası)"
+                errorText.text = getString(R.string.employees_load_error)
                 calisanlarLayout.addView(errorText)
             }
         }
@@ -83,14 +84,14 @@ class IsletmeProfilActivity : AppCompatActivity() {
             dbHelper.openDatabase()
             dbHelper.updateSalonProfileText(salonId, yeniYazi)
             dbHelper.close()
-            Toast.makeText(this, "Profil yazısı güncellendi", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.profile_text_updated), Toast.LENGTH_SHORT).show()
         }
 
         btnCalisanEkle.setOnClickListener {
             val ad = editTextCalisanAdi.text.toString().trim()
             val rol = editTextCalisanRol.text.toString().trim()
             if (ad.isEmpty()) {
-                Toast.makeText(this, "Çalışan adı girin", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.enter_employee_name), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             try {
@@ -101,18 +102,18 @@ class IsletmeProfilActivity : AppCompatActivity() {
                 editTextCalisanRol.text.clear()
                 calisanlariGoster()
             } catch (e: Exception) {
-                Toast.makeText(this, "Çalışan eklenemedi! (Tablo eksik veya veritabanı hatası)", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.employee_add_error), Toast.LENGTH_SHORT).show()
             }
         }
 
         val btnGeriDonusler = Button(this)
-        btnGeriDonusler.text = "Geri Dönüşler"
+        btnGeriDonusler.text = getString(R.string.feedbacks)
         btnGeriDonusler.setOnClickListener {
             dbHelper.openDatabase()
             val calisanlar = dbHelper.getEmployeesForSalon(salonId)
             dbHelper.close()
             val builder = android.app.AlertDialog.Builder(this)
-            builder.setTitle("Çalışanlara Gelen Puanlar ve Yorumlar")
+            builder.setTitle(getString(R.string.employee_ratings_and_comments))
             val scroll = ScrollView(this)
             val layout = LinearLayout(this)
             layout.orientation = LinearLayout.VERTICAL
@@ -125,12 +126,12 @@ class IsletmeProfilActivity : AppCompatActivity() {
                 val yorumlar = dbHelper.getEmployeeComments(empId)
                 dbHelper.close()
                 val calisanText = TextView(this)
-                calisanText.text = "$ad${if (role.isNotBlank()) " - $role" else ""}  |  Ortalama: ${"%.1f".format(avg)} ★"
+                calisanText.text = "$ad${if (role.isNotBlank()) " - $role" else ""}  |  ${getString(R.string.average)}: ${"%.1f".format(avg)} ★"
                 calisanText.setPadding(8, 16, 8, 4)
                 layout.addView(calisanText)
                 if (yorumlar.isEmpty()) {
                     val y = TextView(this)
-                    y.text = "Henüz yorum yok."
+                    y.text = getString(R.string.no_comments_yet)
                     y.setPadding(16, 0, 8, 8)
                     layout.addView(y)
                 } else {
@@ -144,7 +145,7 @@ class IsletmeProfilActivity : AppCompatActivity() {
             }
             scroll.addView(layout)
             builder.setView(scroll)
-            builder.setPositiveButton("Kapat", null)
+            builder.setPositiveButton(getString(R.string.close), null)
             builder.show()
         }
 
@@ -152,5 +153,15 @@ class IsletmeProfilActivity : AppCompatActivity() {
         anaLayout?.addView(btnGeriDonusler)
 
         calisanlariGoster()
+    }
+
+    private fun setAppLocale() {
+        val sharedPref = getSharedPreferences("KullaniciBilgi", MODE_PRIVATE)
+        val lang = sharedPref.getString("lang", "tr") ?: "tr"
+        val locale = java.util.Locale(lang)
+        java.util.Locale.setDefault(locale)
+        val config = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
     }
 } 

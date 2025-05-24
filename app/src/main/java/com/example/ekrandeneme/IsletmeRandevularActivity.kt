@@ -14,6 +14,7 @@ import java.util.*
 
 class IsletmeRandevularActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        setAppLocale()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_isletme_randevular)
 
@@ -84,7 +85,7 @@ class IsletmeRandevularActivity : AppCompatActivity() {
             var toplamFiyat = 0.0
             if (list.isEmpty()) {
             val emptyText = TextView(this)
-                emptyText.text = if (tip == "bekleyen") "Bekleyen randevu yok." else "Geçmiş randevu yok."
+                emptyText.text = if (tip == "bekleyen") getString(R.string.no_pending_appointment) else getString(R.string.no_past_appointment)
             layout.addView(emptyText)
         } else {
                 val dbHelper = DatabaseHelper(this)
@@ -99,7 +100,7 @@ class IsletmeRandevularActivity : AppCompatActivity() {
                     toplamFiyat += fiyatNum
                     // Çalışan bilgisi
                     val employeeId = randevu["employee_id"]
-                    var calisanBilgi = "Çalışan: Belirtilmemiş"
+                    var calisanBilgi = getString(R.string.employee_not_specified)
                     if (!employeeId.isNullOrBlank()) {
                         val cursor = dbHelper.database?.query(
                             "employees",
@@ -112,30 +113,36 @@ class IsletmeRandevularActivity : AppCompatActivity() {
                             if (it.moveToFirst()) {
                                 val ad = it.getString(it.getColumnIndexOrThrow("name"))
                                 val rol = it.getString(it.getColumnIndexOrThrow("role"))
-                                calisanBilgi = "Çalışan: $ad" + if (!rol.isNullOrBlank()) " - $rol" else ""
+                                calisanBilgi = getString(R.string.employee_colon) + ad + if (!rol.isNullOrBlank()) " - $rol" else ""
                             }
                         }
                     }
                 val info = TextView(this)
-                    info.text = "Kullanıcı: $userName\nHizmet: ${randevu["hizmet"]}\nTarih: ${randevu["tarih"]}  Saat: ${randevu["saat"]}\nFiyat: $fiyatStr\n$calisanBilgi\nDurum: ${randevu["status"]}"
+                    info.text = getString(R.string.user_colon) + userName + "\n" +
+                        getString(R.string.service_colon) + (randevu["hizmet"] ?: "") + "\n" +
+                        getString(R.string.date_colon) + (randevu["tarih"] ?: "") + "  " +
+                        getString(R.string.time_colon) + (randevu["saat"] ?: "") + "\n" +
+                        getString(R.string.price_colon) + fiyatStr + "\n" +
+                        calisanBilgi + "\n" +
+                        getString(R.string.status_colon) + (randevu["status"] ?: "")
                 randevuLayout.addView(info)
                 if (randevu["status"] == "PENDING") {
                     val btnOnayla = Button(this)
-                    btnOnayla.text = "Onayla"
+                    btnOnayla.text = getString(R.string.approve)
                     btnOnayla.setOnClickListener {
                         dbHelper.openDatabase()
                         dbHelper.updateAppointmentStatus(randevu["id"]!!, "APPROVED")
                         dbHelper.close()
-                        Toast.makeText(this, "Randevu onaylandı", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.appointment_approved), Toast.LENGTH_SHORT).show()
                         recreate()
                     }
                     val btnReddet = Button(this)
-                    btnReddet.text = "Reddet"
+                    btnReddet.text = getString(R.string.reject)
                     btnReddet.setOnClickListener {
                         dbHelper.openDatabase()
                         dbHelper.updateAppointmentStatus(randevu["id"]!!, "REJECTED")
                         dbHelper.close()
-                        Toast.makeText(this, "Randevu reddedildi", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.appointment_rejected), Toast.LENGTH_SHORT).show()
                         recreate()
                     }
                     randevuLayout.addView(btnOnayla)
@@ -145,7 +152,7 @@ class IsletmeRandevularActivity : AppCompatActivity() {
         }
         dbHelper.close()
                 val toplamText = TextView(this)
-                toplamText.text = "Toplam Fiyat: ${"%.2f".format(toplamFiyat)} TL"
+                toplamText.text = getString(R.string.total_price) + " " + "%.2f".format(toplamFiyat) + " " + getString(R.string.currency)
                 toplamText.textSize = 18f
                 toplamText.setPadding(16, 32, 16, 16)
                 layout.addView(toplamText)
@@ -154,5 +161,15 @@ class IsletmeRandevularActivity : AppCompatActivity() {
         btnBekleyen.setOnClickListener { gosterRandevular("bekleyen") }
         btnGecmis.setOnClickListener { gosterRandevular("gecmis") }
         gosterRandevular("bekleyen")
+    }
+
+    private fun setAppLocale() {
+        val sharedPref = getSharedPreferences("KullaniciBilgi", MODE_PRIVATE)
+        val lang = sharedPref.getString("lang", "tr") ?: "tr"
+        val locale = java.util.Locale(lang)
+        java.util.Locale.setDefault(locale)
+        val config = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
     }
 } 

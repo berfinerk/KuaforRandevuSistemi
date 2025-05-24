@@ -28,7 +28,7 @@
                 android:id="@+id/textViewIsletmeAdi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="İşletme Adı"
+                android:text="@string/business_name"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:textColor="#222222"
@@ -38,7 +38,7 @@
                 android:id="@+id/textViewAdres"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Adres"
+                android:text="@string/address"
                 android:textSize="16sp"
                 android:layout_marginBottom="8dp" />
 
@@ -46,7 +46,7 @@
                 android:id="@+id/textViewAciklama"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Açıklama"
+                android:text="@string/description"
                 android:textSize="16sp"
                 android:layout_marginBottom="8dp" />
 
@@ -54,7 +54,7 @@
                 android:id="@+id/textViewProfilYazisi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Profil yazısı burada gözükecek."
+                android:text="@string/profile_text_placeholder"
                 android:textSize="16sp"
                 android:textStyle="italic"
                 android:layout_marginBottom="8dp" />
@@ -63,7 +63,7 @@
                 android:id="@+id/btnCalisanlariGor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Çalışanları Gör"
+                android:text="@string/view_employees"
                 android:textColor="#FFFFFF"
                 app:cornerRadius="12dp"
                 app:backgroundTint="#1976D2"
@@ -88,6 +88,25 @@
                     android:layout_height="wrap_content"
                     android:stretchColumns="*" />
             </ScrollView>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F5F5F5">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="8dp"
+                    android:text="@string/service"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="@string/fee"
+                    android:textStyle="bold" />
+            </TableRow>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 

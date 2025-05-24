@@ -12,26 +12,27 @@ class GuzellikMerkeziActivity : AppCompatActivity() {
     private lateinit var binding: ActivityGuzellikMerkeziBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setAppLocale()
         super.onCreate(savedInstanceState)
         binding = ActivityGuzellikMerkeziBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // İşletme adını ayarla
-        binding.textViewIsletmeAdi.text = "Güzellik Merkezi"
+        binding.textViewIsletmeAdi.text = getString(R.string.beauty_center)
 
         // İşletme açıklamasını ayarla
-        binding.textViewAciklama.text = "Profesyonel ekibimizle cilt bakımı, manikür, pedikür ve daha birçok hizmet sunuyoruz."
+        binding.textViewAciklama.text = getString(R.string.beauty_center_description)
 
         // Puanı ayarla
         binding.ratingBar.rating = 4.7f
 
         // Hizmetleri ekle
         val hizmetler = listOf(
-            "Cilt Bakımı" to "500 TL",
-            "Manikür" to "200 TL",
-            "Pedikür" to "250 TL",
-            "Kaş Tasarımı" to "150 TL",
-            "Makyaj" to "400 TL"
+            getString(R.string.skin_care) to "500 TL",
+            getString(R.string.manicure) to "200 TL",
+            getString(R.string.pedicure) to "250 TL",
+            getString(R.string.eyebrow_design) to "150 TL",
+            getString(R.string.makeup) to "400 TL"
         )
 
         hizmetler.forEach { (hizmet, ucret) ->
@@ -46,7 +47,7 @@ class GuzellikMerkeziActivity : AppCompatActivity() {
             ucretTextView.setPadding(16, 8, 16, 8)
             
             val btnRandevuAl = Button(this)
-            btnRandevuAl.text = "Randevu Al"
+            btnRandevuAl.text = getString(R.string.book_appointment)
             btnRandevuAl.setOnClickListener {
                 val intent = Intent(this, RandevuAlActivity::class.java)
                 intent.putExtra("isletmeAdi", "Güzellik Merkezi")
@@ -61,5 +62,15 @@ class GuzellikMerkeziActivity : AppCompatActivity() {
             
             binding.tableLayoutHizmetler.addView(row)
         }
+    }
+
+    private fun setAppLocale() {
+        val sharedPref = getSharedPreferences("KullaniciBilgi", MODE_PRIVATE)
+        val lang = sharedPref.getString("lang", "tr") ?: "tr"
+        val locale = java.util.Locale(lang)
+        java.util.Locale.setDefault(locale)
+        val config = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
     }
 } 

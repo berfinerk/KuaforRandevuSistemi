@@ -12,6 +12,7 @@ class MainIsletmeGiris : AppCompatActivity() {
     private lateinit var dbHelper: DatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setAppLocale()
         super.onCreate(savedInstanceState)
         binding = ActivityMainIsletmeGirisBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -27,7 +28,7 @@ class MainIsletmeGiris : AppCompatActivity() {
             val password = binding.editTextPassword.text.toString()
 
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Lütfen e-posta ve şifrenizi girin", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.enter_email_and_password), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -41,17 +42,17 @@ class MainIsletmeGiris : AppCompatActivity() {
                         val salonName = salons.find { it["email"] == email }?.get("name") ?: ""
                         val intent = Intent(this, MainIsletmeEkrani::class.java)
                         intent.putExtra("isletmeAdi", salonName)
-                        Toast.makeText(this, "Giriş başarılı!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT).show()
                         startActivity(intent)
                         finish()
                     } else {
-                        Toast.makeText(this, "Bu hesap bir işletme hesabı değil", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.not_business_account), Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    Toast.makeText(this, "Geçersiz e-posta veya şifre", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.invalid_email_or_password), Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                Toast.makeText(this, "Giriş sırasında bir hata oluştu: ${e.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.login_error, e.message), Toast.LENGTH_LONG).show()
                 e.printStackTrace()
             }
         }
@@ -65,6 +66,16 @@ class MainIsletmeGiris : AppCompatActivity() {
         binding.btnSifremiUnuttum.setOnClickListener {
             startActivity(Intent(this, MainSifremiUnuttum::class.java))
         }
+    }
+
+    private fun setAppLocale() {
+        val sharedPref = getSharedPreferences("KullaniciBilgi", MODE_PRIVATE)
+        val lang = sharedPref.getString("lang", "tr") ?: "tr"
+        val locale = java.util.Locale(lang)
+        java.util.Locale.setDefault(locale)
+        val config = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
     }
 
     override fun onDestroy() {

@@ -27,14 +27,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Profil Yazısı"
+                android:text="@string/profile_text"
                 android:textStyle="bold"
                 android:textSize="18sp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Profil yazınızı girin..."
+                android:hint="@string/enter_profile_text"
                 android:layout_marginBottom="8dp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextProfilYazisi"
@@ -49,7 +49,7 @@
                 android:id="@+id/btnProfilKaydet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Kaydet"
+                android:text="@string/save"
                 android:textColor="#FFFFFF"
                 app:cornerRadius="12dp"
                 app:backgroundTint="#1976D2"
@@ -59,7 +59,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Çalışanlar"
+                android:text="@string/employees"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:layout_marginTop="16dp" />
@@ -73,7 +73,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:hint="Çalışan Adı">
+                    android:hint="@string/employee_name">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextCalisanAdi"
                         android:layout_width="match_parent"
@@ -83,7 +83,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:hint="Rol (opsiyonel)">
+                    android:hint="@string/role_optional">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextCalisanRol"
                         android:layout_width="match_parent"
@@ -93,7 +93,7 @@
                     android:id="@+id/btnCalisanEkle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ekle"
+                    android:text="@string/add"
                     android:textColor="#FFFFFF"
                     app:cornerRadius="12dp"
                     app:backgroundTint="#1976D2" />

@@ -15,6 +15,7 @@ class MainKayitOl : AppCompatActivity() {
     private lateinit var dbHelper: DatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setAppLocale()
         super.onCreate(savedInstanceState)
         binding = ActivityMainKayitOlBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -39,47 +40,57 @@ class MainKayitOl : AppCompatActivity() {
             val phone = binding.editTextPhone.text.toString()
 
             if (email.isEmpty() || password.isEmpty() || passwordAgain.isEmpty() || name.isEmpty() || phone.isEmpty()) {
-                Toast.makeText(this, "Lütfen tüm alanları doldurun", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.fill_all_fields), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             if (password != passwordAgain) {
-                Toast.makeText(this, "Şifreler aynı değil!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.passwords_not_match), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             // Telefon kontrolü
             if (!phone.matches(Regex("^0[0-9]{10}$"))) {
-                Toast.makeText(this, "Telefon numarası 0 ile başlamalı ve 11 haneli olmalı!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.invalid_phone), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             // E-posta kontrolü
             val emailPattern = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")
             if (!emailPattern.matches(email)) {
-                Toast.makeText(this, "Geçerli bir e-posta adresi girin!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.invalid_email), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             // Şifre kontrolü
             if (password.length < 8 || password.length > 32) {
-                Toast.makeText(this, "Şifre 8-32 karakter olmalı!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.invalid_password), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             if (!password.matches(Regex(".*\\d.*")) || !password.matches(Regex(".*[!@#${'$'}%^&*()_+=|<>?{}\\[\\]~-].*"))) {
-                Toast.makeText(this, "Şifre en az bir sayı ve bir sembol içermeli!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.password_requirements), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             try {
                 val userId = dbHelper.addUser(email, password, name, "CUSTOMER")
                 if (userId > 0) {
-                    Toast.makeText(this, "Kayıt başarılı! Giriş yapabilirsiniz.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.success_register), Toast.LENGTH_SHORT).show()
                     finish()
                 } else {
-                    Toast.makeText(this, "Kayıt başarısız. Bu e-posta adresi zaten kullanılıyor olabilir.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, getString(R.string.fail_register), Toast.LENGTH_LONG).show()
                 }
             } catch (e: Exception) {
-                Toast.makeText(this, "Kayıt sırasında bir hata oluştu: ${e.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.register_error, e.message), Toast.LENGTH_LONG).show()
                 e.printStackTrace()
             }
         }
+    }
+
+    private fun setAppLocale() {
+        val sharedPref = getSharedPreferences("KullaniciBilgi", MODE_PRIVATE)
+        val lang = sharedPref.getString("lang", "tr") ?: "tr"
+        val locale = java.util.Locale(lang)
+        java.util.Locale.setDefault(locale)
+        val config = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
     }
 
     override fun onDestroy() {

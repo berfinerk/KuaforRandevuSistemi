@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Hizmetler"
+                android:text="@string/services"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="#1976D2" />
@@ -68,14 +68,14 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:padding="8dp"
-                        android:text="Hizmet"
+                        android:text="@string/service"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
-                        android:text="Ücret"
+                        android:text="@string/fee"
                         android:textStyle="bold" />
                 </TableRow>
                 <!-- Hizmet satırları dinamik olarak eklenecek -->

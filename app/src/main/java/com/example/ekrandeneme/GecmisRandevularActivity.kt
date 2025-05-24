@@ -11,6 +11,7 @@ import java.util.*
 
 class GecmisRandevularActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        setAppLocale()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gecmis_randevular)
 
@@ -55,7 +56,7 @@ class GecmisRandevularActivity : AppCompatActivity() {
                 val tarih = it["tarih"] ?: ""
                 val saat = it["saat"] ?: ""
                 val employeeId = it["employee_id"]
-                var calisanBilgi = "Çalışan: Belirtilmemiş"
+                var calisanBilgi = getString(R.string.employee_not_specified)
                 if (!employeeId.isNullOrBlank()) {
                     val cursor = dbHelper.database?.query(
                         "employees",
@@ -68,17 +69,17 @@ class GecmisRandevularActivity : AppCompatActivity() {
                         if (c.moveToFirst()) {
                             val ad = c.getString(c.getColumnIndexOrThrow("name"))
                             val rol = c.getString(c.getColumnIndexOrThrow("role"))
-                            calisanBilgi = "Çalışan: $ad" + if (!rol.isNullOrBlank()) " - $rol" else ""
+                            calisanBilgi = getString(R.string.employee_colon) + ad + if (!rol.isNullOrBlank()) " - $rol" else ""
                         }
                     }
                 }
-                "$tarih $saat tarihinde, $hizmet için $calisanBilgi randevunuz onaylanamadı.\nLütfen başka bir saat veya çalışan seçin."
+                getString(R.string.appointment_rejected_message, tarih, saat, hizmet, calisanBilgi)
             }
             dbHelper.close()
             android.app.AlertDialog.Builder(this)
-                .setTitle("Randevu Talebiniz Reddedildi")
+                .setTitle(getString(R.string.appointment_rejected_title))
                 .setMessage(message)
-                .setPositiveButton("Tamam") { dialog, _ -> dialog.dismiss() }
+                .setPositiveButton(getString(R.string.ok)) { dialog, _ -> dialog.dismiss() }
                 .show()
             // Bildirilenleri kaydet
             newRejected.forEach { it["id"]?.let { id -> notifiedIds.add(id) } }
@@ -111,14 +112,14 @@ class GecmisRandevularActivity : AppCompatActivity() {
             }
             if (list.isEmpty()) {
                 val emptyText = TextView(this)
-                emptyText.text = if (tip == "bekleyen") "Bekleyen randevunuz yok." else "Geçmiş randevunuz yok."
+                emptyText.text = if (tip == "bekleyen") getString(R.string.no_pending_appointment) else getString(R.string.no_past_appointment)
                 layout.addView(emptyText)
             } else {
                 val dbHelper = DatabaseHelper(this)
                 dbHelper.openDatabase()
                 list.forEach { randevu ->
                     val employeeId = randevu["employee_id"]
-                    var calisanBilgi = "Çalışan: Belirtilmemiş"
+                    var calisanBilgi = getString(R.string.employee_not_specified)
                     if (!employeeId.isNullOrBlank()) {
                         val cursor = dbHelper.database?.query(
                             "employees",
@@ -131,12 +132,12 @@ class GecmisRandevularActivity : AppCompatActivity() {
                             if (it.moveToFirst()) {
                                 val ad = it.getString(it.getColumnIndexOrThrow("name"))
                                 val rol = it.getString(it.getColumnIndexOrThrow("role"))
-                                calisanBilgi = "Çalışan: $ad" + if (!rol.isNullOrBlank()) " - $rol" else ""
+                                calisanBilgi = getString(R.string.employee_colon) + ad + if (!rol.isNullOrBlank()) " - $rol" else ""
                             }
                         }
                     }
                     val textView = TextView(this)
-                    textView.text = "Hizmet: ${randevu["hizmet"]}\nTarih: ${randevu["tarih"]}  Saat: ${randevu["saat"]}  Durum: ${randevu["status"]}\n$calisanBilgi"
+                    textView.text = getString(R.string.appointment_info, randevu["hizmet"], randevu["tarih"], randevu["saat"], randevu["status"], calisanBilgi)
                     textView.textSize = 16f
                     textView.setPadding(8, 8, 8, 8)
                     layout.addView(textView)
@@ -148,16 +149,16 @@ class GecmisRandevularActivity : AppCompatActivity() {
                         val alreadyRated = dbHelper.hasRatingForAppointment(randevuId)
                         if (!alreadyRated) {
                             val btnPuanla = Button(this)
-                            btnPuanla.text = "Puanla / Yorum Yap"
+                            btnPuanla.text = getString(R.string.rate_and_comment)
                             btnPuanla.setOnClickListener {
                                 val dialogView = layoutInflater.inflate(R.layout.dialog_rating, null)
                                 val ratingBar = dialogView.findViewById<android.widget.RatingBar>(R.id.dialogRatingBar)
                                 val yorumEdit = dialogView.findViewById<android.widget.EditText>(R.id.dialogEditTextYorum)
                                 val dialog = android.app.AlertDialog.Builder(this)
-                                    .setTitle("Puanla ve Yorum Yap")
+                                    .setTitle(getString(R.string.rate_and_comment_title))
                                     .setView(dialogView)
-                                    .setPositiveButton("Kaydet", null)
-                                    .setNegativeButton("İptal", null)
+                                    .setPositiveButton(getString(R.string.save), null)
+                                    .setNegativeButton(getString(R.string.cancel), null)
                                     .create()
                                 dialog.setOnShowListener {
                                     val btn = dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
@@ -170,14 +171,14 @@ class GecmisRandevularActivity : AppCompatActivity() {
                                             val result = dbHelperDialog.addRating(employeeId, userEmail, randevuId, puan, yorum)
                                             dbHelperDialog.close()
                                             if (result > 0) {
-                                                android.widget.Toast.makeText(this, "Puanınız kaydedildi!", android.widget.Toast.LENGTH_SHORT).show()
+                                                android.widget.Toast.makeText(this, getString(R.string.rating_saved), android.widget.Toast.LENGTH_SHORT).show()
                                                 dialog.dismiss()
                                                 gosterRandevular(tip) // Ekranı yenile
                                             } else {
-                                                android.widget.Toast.makeText(this, "Puan kaydedilemedi! Lütfen tekrar deneyin.", android.widget.Toast.LENGTH_SHORT).show()
+                                                android.widget.Toast.makeText(this, getString(R.string.rating_save_failed), android.widget.Toast.LENGTH_SHORT).show()
                                             }
                                         } else {
-                                            android.widget.Toast.makeText(this, "Lütfen 1-5 arası bir puan verin!", android.widget.Toast.LENGTH_SHORT).show()
+                                            android.widget.Toast.makeText(this, getString(R.string.rating_range_error), android.widget.Toast.LENGTH_SHORT).show()
                                         }
                                     }
                                 }
@@ -195,12 +196,12 @@ class GecmisRandevularActivity : AppCompatActivity() {
                                     val puan = it.getInt(it.getColumnIndexOrThrow("rating"))
                                     val yorum = it.getString(it.getColumnIndexOrThrow("comment"))
                                     val puanText = TextView(this)
-                                    puanText.text = "Puanınız: " + "★".repeat(puan) + "${if (puan < 5) "☆".repeat(5-puan) else ""}"
+                                    puanText.text = getString(R.string.your_rating, puan)
                                     puanText.setPadding(8, 0, 8, 8)
                                     layout.addView(puanText)
                                     if (!yorum.isNullOrBlank()) {
                                         val yorumText = TextView(this)
-                                        yorumText.text = "Yorumunuz: $yorum"
+                                        yorumText.text = getString(R.string.your_comment, yorum)
                                         yorumText.setPadding(8, 0, 8, 8)
                                         layout.addView(yorumText)
                                     }
@@ -221,5 +222,15 @@ class GecmisRandevularActivity : AppCompatActivity() {
         }
         // Varsayılan olarak bekleyenleri göster
         gosterRandevular("bekleyen")
+    }
+
+    private fun setAppLocale() {
+        val sharedPref = getSharedPreferences("KullaniciBilgi", MODE_PRIVATE)
+        val lang = sharedPref.getString("lang", "tr") ?: "tr"
+        val locale = java.util.Locale(lang)
+        java.util.Locale.setDefault(locale)
+        val config = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
     }
 } 

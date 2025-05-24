@@ -51,7 +51,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Hizmetler"
+                android:text="@string/services"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="#1976D2"

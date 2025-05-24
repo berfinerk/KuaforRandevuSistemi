@@ -1,6 +1,7 @@
 package com.example.ekrandeneme
 
 import android.app.AlertDialog
+import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ class IsletmeHizmetlerActivity : AppCompatActivity() {
     private var salonId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setAppLocale()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_isletme_hizmetler)
 
@@ -34,18 +36,18 @@ class IsletmeHizmetlerActivity : AppCompatActivity() {
             hizmetlerLayout.removeAllViews()
             if (hizmetler.isEmpty()) {
                 val emptyText = TextView(this)
-                emptyText.text = "Bu işletmeye ait hizmet bulunamadı."
+                emptyText.text = getString(R.string.service_not_found)
                 hizmetlerLayout.addView(emptyText)
             } else {
                 hizmetler.forEach { (hizmet, ucret) ->
                     val row = LinearLayout(this)
                     row.orientation = LinearLayout.HORIZONTAL
                     val textView = TextView(this)
-                    textView.text = "Hizmet: $hizmet | Ücret: $ucret"
+                    textView.text = getString(R.string.service_and_fee, hizmet, ucret)
                     textView.textSize = 16f
                     textView.setPadding(8, 8, 8, 8)
                     val btnSil = Button(this)
-                    btnSil.text = "Sil"
+                    btnSil.text = getString(R.string.delete)
                     btnSil.setOnClickListener {
                         dbHelper.openDatabase()
                         dbHelper.database?.delete(
@@ -57,10 +59,10 @@ class IsletmeHizmetlerActivity : AppCompatActivity() {
                         hizmetleriGoster()
                     }
                     val btnDuzenle = Button(this)
-                    btnDuzenle.text = "Düzenle"
+                    btnDuzenle.text = getString(R.string.edit)
                     btnDuzenle.setOnClickListener {
                         val dialog = AlertDialog.Builder(this)
-                        dialog.setTitle("Hizmeti Düzenle")
+                        dialog.setTitle(getString(R.string.edit_service))
                         val layout = LinearLayout(this)
                         layout.orientation = LinearLayout.VERTICAL
                         val inputAd = EditText(this)
@@ -70,7 +72,7 @@ class IsletmeHizmetlerActivity : AppCompatActivity() {
                         layout.addView(inputAd)
                         layout.addView(inputFiyat)
                         dialog.setView(layout)
-                        dialog.setPositiveButton("Kaydet") { _, _ ->
+                        dialog.setPositiveButton(getString(R.string.save)) { _, _ ->
                             dbHelper.openDatabase()
                             val values = android.content.ContentValues().apply {
                                 put("name", inputAd.text.toString())
@@ -85,7 +87,7 @@ class IsletmeHizmetlerActivity : AppCompatActivity() {
                             dbHelper.close()
                             hizmetleriGoster()
                         }
-                        dialog.setNegativeButton("İptal", null)
+                        dialog.setNegativeButton(getString(R.string.cancel), null)
                         dialog.show()
                     }
                     row.addView(textView)
@@ -113,7 +115,7 @@ class IsletmeHizmetlerActivity : AppCompatActivity() {
             val ad = editTextHizmetAdi.text.toString().trim()
             val fiyat = editTextHizmetFiyat.text.toString().trim()
             if (ad.isEmpty() || fiyat.isEmpty()) {
-                Toast.makeText(this, "Lütfen hizmet adı ve fiyat girin", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.enter_service_name_and_fee), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             val seciliCalisanIdler = mutableListOf<String>()
@@ -124,7 +126,7 @@ class IsletmeHizmetlerActivity : AppCompatActivity() {
                 }
             }
             if (seciliCalisanIdler.isEmpty()) {
-                Toast.makeText(this, "En az bir çalışan seçmelisiniz", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.select_at_least_one_employee), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             dbHelper.openDatabase()
@@ -140,9 +142,9 @@ class IsletmeHizmetlerActivity : AppCompatActivity() {
                         put("employee_id", calisanId)
                     })
                 }
-                Toast.makeText(this, "Hizmet ve çalışanlar kaydedildi", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.service_and_employees_saved), Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "Hizmet eklenemedi", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.service_add_failed), Toast.LENGTH_SHORT).show()
             }
             dbHelper.close()
             editTextHizmetAdi.text.clear()
@@ -153,5 +155,15 @@ class IsletmeHizmetlerActivity : AppCompatActivity() {
 
         hizmetleriGoster()
         calisanSecimleriniGoster()
+    }
+
+    private fun setAppLocale() {
+        val sharedPref = getSharedPreferences("KullaniciBilgi", MODE_PRIVATE)
+        val lang = sharedPref.getString("lang", "tr") ?: "tr"
+        val locale = java.util.Locale(lang)
+        java.util.Locale.setDefault(locale)
+        val config = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
     }
 } 

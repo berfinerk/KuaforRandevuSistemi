@@ -27,7 +27,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Hizmet Adı">
+                android:hint="@string/service_name">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextHizmetAdi"
                     android:layout_width="match_parent"
@@ -37,7 +37,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Fiyat"
+                android:hint="@string/price"
                 android:layout_marginTop="8dp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextHizmetFiyat"
@@ -49,7 +49,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bu hizmeti yapabilen çalışanlar"
+                android:text="@string/employees_can_do_this_service"
                 android:textStyle="bold"
                 android:layout_marginTop="8dp"/>
             <LinearLayout
@@ -63,7 +63,7 @@
                 android:id="@+id/btnHizmetEkle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hizmet Ekle"
+                android:text="@string/add_service"
                 android:textColor="#FFFFFF"
                 app:cornerRadius="12dp"
                 app:backgroundTint="#1976D2"

@@ -13,13 +13,14 @@ class IsletmeDetayActivity : AppCompatActivity() {
     private lateinit var binding: ActivityIsletmeDetayBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setAppLocale()
         super.onCreate(savedInstanceState)
         binding = ActivityIsletmeDetayBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val isletmeId = intent.getStringExtra("isletmeId")
         if (isletmeId.isNullOrBlank()) {
-            android.widget.Toast.makeText(this, "İşletme bulunamadı!", android.widget.Toast.LENGTH_LONG).show()
+            android.widget.Toast.makeText(this, getString(R.string.business_not_found), android.widget.Toast.LENGTH_LONG).show()
             finish()
             return
         }
@@ -27,7 +28,7 @@ class IsletmeDetayActivity : AppCompatActivity() {
         dbHelper.openDatabase()
         val salon = dbHelper.getSalonById(isletmeId)
         if (salon.isEmpty()) {
-            android.widget.Toast.makeText(this, "İşletme bilgisi bulunamadı!", android.widget.Toast.LENGTH_LONG).show()
+            android.widget.Toast.makeText(this, getString(R.string.business_info_not_found), android.widget.Toast.LENGTH_LONG).show()
             finish()
             return
         }
@@ -36,15 +37,15 @@ class IsletmeDetayActivity : AppCompatActivity() {
         val calisanlar = try { dbHelper.getEmployeesForSalon(isletmeId) } catch (e: Exception) { emptyList() }
         dbHelper.close()
 
-        binding.textViewIsletmeAdi.text = salon["name"] ?: "İşletme"
+        binding.textViewIsletmeAdi.text = salon["name"] ?: getString(R.string.business)
         binding.textViewAdres.text = salon["address"] ?: ""
-        binding.textViewAciklama.text = "Profesyonel hizmetlerimizle sizlerleyiz."
+        binding.textViewAciklama.text = getString(R.string.professional_services)
         binding.ratingBar.rating = DatabaseHelper(this).apply { openDatabase() }.getSalonAverageRating(isletmeId)
-        binding.textViewProfilYazisi.text = if (profilYazisi.isNotBlank()) profilYazisi else "Profil yazısı eklenmemiş."
+        binding.textViewProfilYazisi.text = if (profilYazisi.isNotBlank()) profilYazisi else getString(R.string.profile_text_not_added)
 
         if (hizmetler.isEmpty()) {
             val emptyText = TextView(this)
-            emptyText.text = "Bu işletmeye ait hizmet bulunamadı."
+            emptyText.text = getString(R.string.service_not_found)
             binding.tableLayoutHizmetler.addView(emptyText)
         } else {
             hizmetler.forEach { (hizmet, ucret) ->
@@ -56,7 +57,7 @@ class IsletmeDetayActivity : AppCompatActivity() {
                 ucretTextView.text = ucret
                 ucretTextView.setPadding(16, 8, 16, 8)
                 val btnRandevuAl = Button(this)
-                btnRandevuAl.text = "Randevu Al"
+                btnRandevuAl.text = getString(R.string.book_appointment)
                 btnRandevuAl.setOnClickListener {
                     val intent = Intent(this, RandevuAlActivity::class.java)
                     intent.putExtra("isletmeId", isletmeId)
@@ -74,9 +75,9 @@ class IsletmeDetayActivity : AppCompatActivity() {
 
         binding.btnCalisanlariGor.setOnClickListener {
             val builder = android.app.AlertDialog.Builder(this)
-            builder.setTitle("Çalışanlar")
+            builder.setTitle(getString(R.string.employees))
             val calisanListesi = if (calisanlar.isEmpty()) {
-                "Çalışan yok."
+                getString(R.string.employee_not_found)
             } else {
                 val dbHelper = DatabaseHelper(this)
                 dbHelper.openDatabase()
@@ -91,8 +92,18 @@ class IsletmeDetayActivity : AppCompatActivity() {
                 list
             }
             builder.setMessage(calisanListesi)
-            builder.setPositiveButton("Kapat", null)
+            builder.setPositiveButton(getString(R.string.close), null)
             builder.show()
         }
+    }
+
+    private fun setAppLocale() {
+        val sharedPref = getSharedPreferences("KullaniciBilgi", MODE_PRIVATE)
+        val lang = sharedPref.getString("lang", "tr") ?: "tr"
+        val locale = java.util.Locale(lang)
+        java.util.Locale.setDefault(locale)
+        val config = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
     }
 } 

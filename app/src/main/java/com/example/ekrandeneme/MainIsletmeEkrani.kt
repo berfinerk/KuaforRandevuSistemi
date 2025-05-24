@@ -9,13 +9,14 @@ class MainIsletmeEkrani : AppCompatActivity() {
     private lateinit var binding: ActivityMainIsletmeEkraniBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setAppLocale()
         super.onCreate(savedInstanceState)
         binding = ActivityMainIsletmeEkraniBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // Giriş yapan işletmenin adı intent ile alınır
         val isletmeAdi = intent.getStringExtra("isletmeAdi") ?: ""
-        android.widget.Toast.makeText(this, "Panelde işletme adı: $isletmeAdi", android.widget.Toast.LENGTH_LONG).show()
+        android.widget.Toast.makeText(this, getString(R.string.business_panel_toast, isletmeAdi), android.widget.Toast.LENGTH_LONG).show()
 
         // Randevular butonu tıklama olayı
         binding.btnRandevular.setOnClickListener {
@@ -50,5 +51,15 @@ class MainIsletmeEkrani : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
+    }
+
+    private fun setAppLocale() {
+        val sharedPref = getSharedPreferences("KullaniciBilgi", MODE_PRIVATE)
+        val lang = sharedPref.getString("lang", "tr") ?: "tr"
+        val locale = java.util.Locale(lang)
+        java.util.Locale.setDefault(locale)
+        val config = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
     }
 } 

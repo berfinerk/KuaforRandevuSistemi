@@ -12,6 +12,7 @@ import com.example.ekrandeneme.database.DatabaseHelper
 
 class MainKuaforListesi : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        setAppLocale()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_kuafor_listesi)
         enableEdgeToEdge()
@@ -39,5 +40,15 @@ class MainKuaforListesi : AppCompatActivity() {
             intent.putExtra("isletmeId", selectedKuafor["id"])
             startActivity(intent)
         }
+    }
+
+    private fun setAppLocale() {
+        val sharedPref = getSharedPreferences("KullaniciBilgi", MODE_PRIVATE)
+        val lang = sharedPref.getString("lang", "tr") ?: "tr"
+        val locale = java.util.Locale(lang)
+        java.util.Locale.setDefault(locale)
+        val config = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
     }
 }

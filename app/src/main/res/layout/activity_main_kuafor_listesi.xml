@@ -33,7 +33,7 @@
                 android:id="@+id/textViewKuaforListesi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Kuaförler"
+                android:text="@string/hairdressers"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:textColor="#222222"

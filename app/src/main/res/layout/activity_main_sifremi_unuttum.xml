@@ -30,7 +30,7 @@
                 android:id="@+id/textViewTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ŞİFRE YENİLEME"
+                android:text="@string/reset_password"
                 android:textColor="#222222"
                 android:textSize="30sp"
                 android:textStyle="bold"
@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="E-posta Adresiniz">
+                android:hint="@string/email_address">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextEmail"
                     android:layout_width="match_parent"
@@ -55,7 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="KODU GÖNDER"
+                android:text="@string/send_code"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp"
                 app:cornerRadius="16dp"
@@ -63,10 +63,11 @@
                 app:backgroundTint="#1976D2" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTextKodLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:hint="6 Haneli Kod"
+                android:hint="@string/six_digit_code"
                 android:visibility="gone">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextKod"
@@ -78,10 +79,11 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTextYeniSifreLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:hint="Yeni Şifre"
+                android:hint="@string/new_password"
                 android:visibility="gone">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextYeniSifre"
@@ -97,7 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="ŞİFREMİ YENİLE"
+                android:text="@string/reset_password"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp"
                 app:cornerRadius="16dp"

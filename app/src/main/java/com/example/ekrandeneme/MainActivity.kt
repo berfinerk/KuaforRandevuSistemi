@@ -1,11 +1,13 @@
 package com.example.ekrandeneme
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ekrandeneme.database.DatabaseHelper
 import com.example.ekrandeneme.databinding.ActivityMainBinding
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -80,11 +82,39 @@ class MainActivity : AppCompatActivity() {
 
         // Üye Olmadan devam et butonu tıklama olayı
         binding.btnGirisYap2.setOnClickListener {
-            // Tüm kullanıcı bilgilerini temizle
             val sharedPref = getSharedPreferences("KullaniciBilgi", MODE_PRIVATE)
+            val lang = sharedPref.getString("lang", "tr") // dili sakla
             sharedPref.edit().clear().apply()
+            if (lang != null) {
+                sharedPref.edit().putString("lang", lang).apply()
+            }
             startActivity(Intent(this, MainKullaniciEkrani::class.java))
         }
+
+        // Dil seçici Spinner
+        val sharedPref = getSharedPreferences("KullaniciBilgi", MODE_PRIVATE)
+        val currentLang = sharedPref.getString("lang", "tr") ?: "tr"
+        val spinner = binding.spinnerLanguage
+        spinner.setSelection(if (currentLang == "tr") 0 else 1)
+        spinner.setOnItemSelectedListener(object : android.widget.AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: android.widget.AdapterView<*>, view: android.view.View?, position: Int, id: Long) {
+                val lang = if (position == 0) "tr" else "en"
+                if (lang != currentLang) {
+                    setLocale(lang)
+                    sharedPref.edit().putString("lang", lang).apply()
+                    recreate()
+                }
+            }
+            override fun onNothingSelected(parent: android.widget.AdapterView<*>) {}
+        })
+    }
+
+    private fun setLocale(language: String) {
+        val locale = Locale(language)
+        Locale.setDefault(locale)
+        val config = Configuration()
+        config.setLocale(locale)
+        baseContext.resources.updateConfiguration(config, baseContext.resources.displayMetrics)
     }
 
     override fun onDestroy() {

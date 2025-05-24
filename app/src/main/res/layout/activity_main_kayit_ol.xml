@@ -44,7 +44,7 @@
                 android:id="@+id/KayittextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Yeni Kullanıcı Kayıt"
+                android:text="@string/register"
                 android:textColor="#222222"
                 android:textSize="28sp"
                 android:textStyle="bold|italic"
@@ -55,7 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="Ad Soyad">
+                android:hint="@string/full_name">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextName"
                     android:layout_width="match_parent"
@@ -68,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="E-posta">
+                android:hint="@string/email">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextEmail"
                     android:layout_width="match_parent"
@@ -81,7 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="Şifre">
+                android:hint="@string/password">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextPassword"
                     android:layout_width="match_parent"
@@ -94,7 +94,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="Şifre Tekrar">
+                android:hint="@string/password_again">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextPasswordAgain"
                     android:layout_width="match_parent"
@@ -107,7 +107,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="Telefon">
+                android:hint="@string/phone">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextPhone"
                     android:layout_width="match_parent"
@@ -121,7 +121,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="KAYIT OL"
+                android:text="@string/register"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp"
                 app:cornerRadius="16dp"

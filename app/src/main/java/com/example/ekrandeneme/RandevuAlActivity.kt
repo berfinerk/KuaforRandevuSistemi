@@ -135,7 +135,7 @@ class RandevuAlActivity : AppCompatActivity() {
 
     private fun randevuAl() {
         if (selectedTime.isEmpty() || selectedEmployeeId.isEmpty()) {
-            Toast.makeText(this, "Lütfen bir saat ve çalışan seçin", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.select_time_and_employee), Toast.LENGTH_SHORT).show()
             return
         }
         val dateStr = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(selectedDate.time)
@@ -143,7 +143,7 @@ class RandevuAlActivity : AppCompatActivity() {
         val userEmail = sharedPref.getString("email", "") ?: ""
         val emailPattern = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")
         if (userEmail.isEmpty() || !emailPattern.matches(userEmail)) {
-            Toast.makeText(this, "Lütfen üye girişi yapın", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.login_required), Toast.LENGTH_LONG).show()
             val intent = android.content.Intent(this, MainActivity::class.java)
             intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
@@ -154,7 +154,7 @@ class RandevuAlActivity : AppCompatActivity() {
         dbHelper.openDatabase()
         val slotTaken = dbHelper.isAppointmentSlotTaken(selectedEmployeeId, dateStr, selectedTime)
         if (slotTaken) {
-            Toast.makeText(this, "Bu çalışan bu tarih ve saatte zaten randevulu! Lütfen başka bir saat veya çalışan seçin.", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.slot_taken), Toast.LENGTH_LONG).show()
             dbHelper.close()
             return
         }
@@ -171,10 +171,10 @@ class RandevuAlActivity : AppCompatActivity() {
         val result = dbHelper.database?.insert("appointments", null, values) ?: -1
         dbHelper.close()
         if (result > 0) {
-            Toast.makeText(this, "Randevunuz oluşturuldu!\nTarih: $dateStr\nSaat: $selectedTime", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.appointment_created, dateStr, selectedTime), Toast.LENGTH_LONG).show()
             finish()
         } else {
-            Toast.makeText(this, "Randevu oluşturulamadı!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.appointment_create_failed), Toast.LENGTH_SHORT).show()
         }
     }
 } 

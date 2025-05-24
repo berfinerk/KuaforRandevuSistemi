@@ -18,6 +18,7 @@ class AramaSonucActivity : AppCompatActivity() {
     private var salonList: List<Map<String, String>> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setAppLocale()
         super.onCreate(savedInstanceState)
         binding = ActivityAramaSonucBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -51,6 +52,16 @@ class AramaSonucActivity : AppCompatActivity() {
                 return true
             }
         })
+    }
+
+    private fun setAppLocale() {
+        val sharedPref = getSharedPreferences("KullaniciBilgi", MODE_PRIVATE)
+        val lang = sharedPref.getString("lang", "tr") ?: "tr"
+        val locale = java.util.Locale(lang)
+        java.util.Locale.setDefault(locale)
+        val config = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
     }
 
     private fun searchAndShowResults(query: String) {

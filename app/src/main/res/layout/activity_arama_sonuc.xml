@@ -30,7 +30,7 @@
                 android:id="@+id/searchView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:queryHint="Salon veya Hizmet Ara..."
+                android:queryHint="@string/search_salon_or_service"
                 android:iconifiedByDefault="false"
                 android:layout_marginBottom="12dp" />
 

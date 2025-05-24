@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Yorumunuz (isteğe bağlı)">
+            android:hint="@string/your_comment_optional">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/dialogEditTextYorum"
                 android:layout_width="match_parent"
