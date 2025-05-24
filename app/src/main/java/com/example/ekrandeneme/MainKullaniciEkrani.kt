@@ -15,6 +15,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.util.Log
+import android.widget.Toast
+import java.io.IOException
+
 
 class MainKullaniciEkrani : AppCompatActivity() {
     private lateinit var binding: ActivityMainKullaniciEkraniBinding
